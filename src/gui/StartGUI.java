@@ -5,6 +5,14 @@
  */
 package gui;
 
+import database.DBAccess;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JDialog;
+
 /**
  *
  * @author Veronika
@@ -14,8 +22,12 @@ public class StartGUI extends javax.swing.JFrame {
     /**
      * Creates new form StartGUI
      */
-    public StartGUI() {
+    private DBAccess access;
+    private NewMitarbeiter newmitarbeiterdialog;
+    public StartGUI() throws IOException, FileNotFoundException, ClassNotFoundException, SQLException {
         initComponents();
+        access=new DBAccess("proorg");
+        this.newmitarbeiterdialog=new NewMitarbeiter(this,true);
     }
 
     /**
@@ -47,20 +59,39 @@ public class StartGUI extends javax.swing.JFrame {
         jPanel1.add(tfname);
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel2.setText("Password:");
+        jLabel2.setText("Passwort");
         jPanel1.add(jLabel2);
         jPanel1.add(tfpassword);
 
-        btnlogin.setText("Log in");
+        btnlogin.setText("Einloggen");
+        btnlogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnloginActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnlogin);
 
-        btncreateaccount.setText("Create new Account");
+        btncreateaccount.setText("Neuen Account erstellen");
+        btncreateaccount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncreateaccountActionPerformed(evt);
+            }
+        });
         jPanel1.add(btncreateaccount);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnloginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnloginActionPerformed
+     
+    }//GEN-LAST:event_btnloginActionPerformed
+
+    private void btncreateaccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncreateaccountActionPerformed
+        //Dialog aufrufen, der den neuen Mitarbeiter erstellt
+        this.newmitarbeiterdialog.setVisible(true);
+    }//GEN-LAST:event_btncreateaccountActionPerformed
 
     /**
      * @param args the command line arguments
@@ -92,7 +123,15 @@ public class StartGUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new StartGUI().setVisible(true);
+                try {
+                    new StartGUI().setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(StartGUI.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(StartGUI.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(StartGUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
