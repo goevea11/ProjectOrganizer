@@ -5,6 +5,7 @@
  */
 package gui;
 
+import bl.Mitarbeiter;
 import database.DBAccess;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -91,6 +92,10 @@ public class StartGUI extends javax.swing.JFrame {
     private void btncreateaccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncreateaccountActionPerformed
         //Dialog aufrufen, der den neuen Mitarbeiter erstellt
         this.newmitarbeiterdialog.setVisible(true);
+        if(newmitarbeiterdialog.isOk){
+            Mitarbeiter m=newmitarbeiterdialog.m;
+            access.insertMitarbeiter(m);
+        }
     }//GEN-LAST:event_btncreateaccountActionPerformed
 
     /**
