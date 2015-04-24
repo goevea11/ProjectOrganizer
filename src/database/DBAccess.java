@@ -50,9 +50,9 @@ public class DBAccess
            SimpleDateFormat  sdf = new SimpleDateFormat("dd.MM.yyyy");
            String date = sdf.format(d);
            Statement stat = db.getCon().createStatement();
-           String sqlString="INSERT INTO \"Mitarbeiter\"(\n" +
+           String sqlString="INSERT INTO Mitarbeiter(\n" +
 "            mitarbeiterid, vorname, nachname, geburtsdatum, passwort)\n" +
-"    VALUES ("+maid+", "+vn+", "+nn+", TO_DATE('"+date+"','dd.MM.yyyy'), "+pw+");";
+"    VALUES ("+maid+", '"+vn+"', '"+nn+"', TO_DATE('"+date+"','dd.MM.yyyy'), '"+pw+"');";
            stat.executeUpdate(sqlString);
            stat.close();
        } catch (SQLException ex) {
