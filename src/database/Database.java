@@ -22,7 +22,7 @@ public class Database {
     Connection con;
     
     private final String fileName=System.getProperty("user.dir")
-            +File.separator+"src"+File.separator+"data"+
+            +File.separator+"src"+File.separator+"database"+
             File.separator + "dbproperties.properties";
     // connect
     // dissconnect
