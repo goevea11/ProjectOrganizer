@@ -18,8 +18,8 @@ public class Mitarbeiter {
     Date gebdatum;
     String passwort;
 
-    public Mitarbeiter(int id, String vorname, String nachname, Date gebdatum, String passwort) {
-        this.id = id;
+    public Mitarbeiter(String vorname, String nachname, Date gebdatum, String passwort) {
+      
         this.vorname = vorname;
         this.nachname = nachname;
         this.gebdatum = gebdatum;
@@ -30,9 +30,7 @@ public class Mitarbeiter {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+  
 
     public String getVorname() {
         return vorname;
