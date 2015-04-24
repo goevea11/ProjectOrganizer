@@ -27,18 +27,37 @@ public class StartGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        tfname = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        tfpassword = new javax.swing.JTextField();
+        btnlogin = new javax.swing.JButton();
+        btncreateaccount = new javax.swing.JButton();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Login");
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        jPanel1.setLayout(new java.awt.GridLayout(3, 2));
+
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel1.setText("Mitarbeiternummer:");
+        jPanel1.add(jLabel1);
+        jPanel1.add(tfname);
+
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel2.setText("Password:");
+        jPanel1.add(jLabel2);
+        jPanel1.add(tfpassword);
+
+        btnlogin.setText("Log in");
+        jPanel1.add(btnlogin);
+
+        btncreateaccount.setText("Create new Account");
+        jPanel1.add(btncreateaccount);
+
+        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -79,5 +98,12 @@ public class StartGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btncreateaccount;
+    private javax.swing.JButton btnlogin;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextField tfname;
+    private javax.swing.JTextField tfpassword;
     // End of variables declaration//GEN-END:variables
 }
