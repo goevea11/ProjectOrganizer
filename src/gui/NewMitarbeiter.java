@@ -5,6 +5,13 @@
  */
 package gui;
 
+import bl.Mitarbeiter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Domi
@@ -15,12 +22,14 @@ public class NewMitarbeiter extends javax.swing.JDialog {
      * Creates new form NewMitarbeiter
      */
     public boolean isOk;
-    public String vorname,nachname,gebdatum,passwort;
-    
+    private String vorname,nachname,gebdatum,passwort;
+    private SimpleDateFormat dateformat;
+    public Mitarbeiter m;
     public NewMitarbeiter(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         isOk=false;
+        dateformat=new SimpleDateFormat("DD.MM.YYYY");
     }
 
     /**
@@ -73,6 +82,11 @@ public class NewMitarbeiter extends javax.swing.JDialog {
         getContentPane().add(btncreateAccount);
 
         btnabbrechen.setText("Abbrechen");
+        btnabbrechen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnabbrechenActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnabbrechen);
 
         pack();
@@ -88,10 +102,22 @@ public class NewMitarbeiter extends javax.swing.JDialog {
            nachname=tfnachname.getText();
            gebdatum=tfgebdatum.getText();
            passwort=new String(tfpasswort.getPassword());
+           Date d=new Date();
+           try {
+               m=new Mitarbeiter(vorname,nachname,dateformat.parse(gebdatum),passwort);
+           } catch (ParseException ex) {
+               Logger.getLogger(NewMitarbeiter.class.getName()).log(Level.SEVERE, null, ex);
+           }
            this.isOk=true;
+           this.setVisible(false);
        }
             
     }//GEN-LAST:event_btncreateAccountActionPerformed
+
+    private void btnabbrechenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnabbrechenActionPerformed
+          this.isOk=false;
+           this.setVisible(false);
+    }//GEN-LAST:event_btnabbrechenActionPerformed
 
     /**
      * @param args the command line arguments
