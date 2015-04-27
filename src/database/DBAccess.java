@@ -59,11 +59,11 @@ public class DBAccess
            Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
        }
     }
-    public LinkedList<String> getMitarbeiter() {
+    public LinkedList<String> getMitarbeiter(String passwort) {
         LinkedList<String> ma = new LinkedList<String>();
         try {
             Statement stat = db.getCon().createStatement();
-            String sqlString = "SElECT nachname FROM mitarbeiter;";
+            String sqlString = "SElECT nachname FROM mitarbeiter WHERE passwort='"+passwort+"';";
             ResultSet rs = stat.executeQuery(sqlString);
 
             while (rs.next()) {
@@ -76,4 +76,21 @@ public class DBAccess
         }
         return ma;
     }
+
+
+public String checkMitarbeiter(String nachname,String passwort) throws SQLException {
+        LinkedList<String> ma = new LinkedList<String>();
+       
+            Statement stat = db.getCon().createStatement();
+            String sqlString = "SElECT nachname FROM \"Mitarbeiter\" WHERE passwort='"+passwort+"' AND nachname='"+nachname+"';";
+            ResultSet rs = stat.executeQuery(sqlString);
+
+            rs.next();
+           String returnname=rs.getString(1);
+            stat.close();
+       
+      
+        return returnname;
+    }
 }
+
