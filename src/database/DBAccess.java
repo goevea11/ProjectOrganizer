@@ -52,7 +52,7 @@ public class DBAccess
            Statement stat = db.getCon().createStatement();
            String sqlString="INSERT INTO \"Mitarbeiter\"(\n" +
 "            mitarbeiterid, vorname, nachname, geburtsdatum, passwort)\n" +
-"    VALUES ((SELECT MAX(maid) FROM \"mitarbeiter\")+1, '"+vn+"', '"+nn+"', TO_DATE('"+date+"','dd.MM.yyyy'), '"+pw+"');";
+"    VALUES ((SELECT MAX(mitarbeiterid) FROM \"mitarbeiter\")+1, '"+vn+"', '"+nn+"', TO_DATE('"+date+"','dd.MM.yyyy'), '"+pw+"');";
            stat.executeUpdate(sqlString);
            stat.close();
        } catch (SQLException ex) {
