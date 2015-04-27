@@ -52,7 +52,7 @@ public class DBAccess
            Statement stat = db.getCon().createStatement();
            String sqlString="INSERT INTO \"Mitarbeiter\"(\n" +
 "            mitarbeiterid, vorname, nachname, geburtsdatum, passwort)\n" +
-"    VALUES ((SELECT MAX(mitarbeiterid) FROM \"mitarbeiter\")+1, '"+vn+"', '"+nn+"', TO_DATE('"+date+"','dd.MM.yyyy'), '"+pw+"');";
+"    VALUES ((SELECT MAX(mitarbeiterid) FROM \"Mitarbeiter\")+1, '"+vn+"', '"+nn+"', TO_DATE('"+date+"','dd.MM.yyyy'), '"+pw+"');";
            stat.executeUpdate(sqlString);
            stat.close();
        } catch (SQLException ex) {
@@ -63,7 +63,7 @@ public class DBAccess
         LinkedList<String> ma = new LinkedList<String>();
         try {
             Statement stat = db.getCon().createStatement();
-            String sqlString = "SElECT nachname FROM mitarbeiter WHERE passwort='"+passwort+"';";
+            String sqlString = "SElECT nachname FROM \"Mitarbeiter\" WHERE passwort='"+passwort+"';";
             ResultSet rs = stat.executeQuery(sqlString);
 
             while (rs.next()) {
