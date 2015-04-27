@@ -116,7 +116,7 @@ public class NewMitarbeiter extends javax.swing.JDialog {
 
     private void btnabbrechenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnabbrechenActionPerformed
           this.isOk=false;
-           this.setVisible(false);
+          dispose();
     }//GEN-LAST:event_btnabbrechenActionPerformed
 
     /**
