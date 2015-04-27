@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -55,7 +56,7 @@ public class StartGUI extends javax.swing.JFrame {
         jPanel1.setLayout(new java.awt.GridLayout(3, 2));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel1.setText("Mitarbeiternummer:");
+        jLabel1.setText("Nachname:");
         jPanel1.add(jLabel1);
         jPanel1.add(tfname);
 
@@ -86,7 +87,14 @@ public class StartGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnloginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnloginActionPerformed
-     
+        try {
+            if(access.checkMitarbeiter(this.tfname.getText(),this.tfpassword.getText()).equals(this.tfname.getText())){
+                JOptionPane.showMessageDialog(this, "\"login erfolgreich\"");
+                ProjectGUI projectgui=new ProjectGUI();
+                projectgui.setVisible(true);
+            }  } catch (SQLException ex) {
+            Logger.getLogger(StartGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnloginActionPerformed
 
     private void btncreateaccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncreateaccountActionPerformed
