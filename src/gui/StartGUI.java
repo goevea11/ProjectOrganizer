@@ -87,13 +87,10 @@ public class StartGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnloginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnloginActionPerformed
-        try {
-            if(access.checkMitarbeiter(this.tfname.getText(),this.tfpassword.getText()).equals(this.tfname.getText())){
-                JOptionPane.showMessageDialog(this, "\"login erfolgreich\"");
-                ProjectGUI projectgui=new ProjectGUI();
-                projectgui.setVisible(true);
-            }  } catch (SQLException ex) {
-            Logger.getLogger(StartGUI.class.getName()).log(Level.SEVERE, null, ex);
+        if(access.checkMitarbeiter(this.tfname.getText(),this.tfpassword.getText()).equals(this.tfname.getText())){
+            JOptionPane.showMessageDialog(this, "\"login erfolgreich\"");
+            ProjectGUI projectgui=new ProjectGUI();
+            projectgui.setVisible(true);
         }
     }//GEN-LAST:event_btnloginActionPerformed
 
