@@ -40,7 +40,7 @@ public class ProjectGUI extends javax.swing.JFrame {
 
     ProjectGUI(int mid) {
         new ProjectGUI();
-        ll = dba.getProjects(mid);
+        ll = dba.getProjekte(mid);
     }
 
     /**
