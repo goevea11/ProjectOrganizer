@@ -25,7 +25,10 @@ public class DBAccess {
     public static void main(String[] args) {
         try {
             DBAccess dba = new DBAccess("proorg");
-            dba.insertMitarbeiter(new Mitarbeiter("admin", "admin", new Date(), "1234"));
+            Mitarbeiter admin = new Mitarbeiter("admin", "admin", new Date(), "1234");
+            admin.setid(1);
+            // dba.insertMitarbeiter(admin);
+            dba.insertProjekt(new Projekt(1, "adminproject", new Date(), new Date()), admin);
         } catch (IOException ex) {
             Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
@@ -91,45 +94,47 @@ public class DBAccess {
             String sqlString = "SElECT nachname FROM \"Mitarbeiter\" WHERE passwort='" + passwort + "' AND nachname='" + nachname + "';";
             ResultSet rs = stat.executeQuery(sqlString);
 
-            if(rs.next()){
-                returnname = rs.getString(1); 
+            if (rs.next()) {
+                returnname = rs.getString(1);
             }
-           
+
             stat.close();
 
         } catch (SQLException ex) {
-            
+
             Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
             return "";
-            
+
         }
         return returnname;
     }
 
+    public void insertProjekt(Projekt p, Mitarbeiter gründer) {
 
-public void insertProjekt(Projekt p, Mitarbeiter gründer){
-    
-     try {
-           
-           SimpleDateFormat  sdf = new SimpleDateFormat("dd.MM.yyyy");
-          
-           Statement stat = db.getCon().createStatement();
-           
-           
-           //Projekt einfügen
-           String sqlString="INSERT INTO \"Projekt\"(\n" +
-"            Projectid, Name, anfangsdatum, enddatum)\n" +
-"    VALUES ((SELECT MAX(Projectid) FROM \"Projekt\")+1, '"+p.getName()+"', TO_DATE('"+sdf.format(p.getAnfangsdatum())+"','dd.MM.yyyy'),TO_DATE('"+sdf.format(p.getAnfangsdatum())+"','dd.MM.yyyy'));";
-           stat.executeUpdate(sqlString);
-           
-           //Verbindung zwischen Mitarbeiter und Projektersteller hersteller
-           sqlString="INSERT INTO Mitarbeiter";
-           stat.close();
-       } catch (SQLException ex) {
-           Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
-       }
-}
+        try {
 
+            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+
+            Statement stat = db.getCon().createStatement();
+
+           //(SELECT MAX(Projectid) FROM \"Project\")+1
+            //Projekt einfügen
+            String sqlString = "INSERT INTO \"Project\""
+                    + " VALUES ((SELECT MAX(Projectid) FROM \"Project\")+1, '" + p.getName() + "', TO_DATE('" + sdf.format(p.getAnfangsdatum()) + "','dd.MM.yyyy'),TO_DATE('" + sdf.format(p.getAnfangsdatum()) + "','dd.MM.yyyy'));";
+           
+            stat.executeUpdate(sqlString);
+
+            //Verbindung zwischen Mitarbeiter und Projektersteller hersteller
+            sqlString = "INSERT INTO  \"MitarbeiterProject\" "
+                    + "VALUES((SELECT MAX(Projectid) FROM \"Project\")+1, " + gründer.getId() + ");";
+            stat.executeUpdate(sqlString);
+            stat.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+   
 
 public LinkedList<Projekt> getProjekte(int mitarbeiterid){
     
@@ -140,20 +145,19 @@ public LinkedList<Projekt> getProjekte(int mitarbeiterid){
             String sqlString = "SELECT Projectid, Name, anfangsdatum, enddatum "
                     + "FROM \"Mitarbeiter\" m INNER JOIN \"MitarbeiterProject\" mp ON(m.mitarbeiterid==mp.mitarbeiterid)"
                     + " INNER JOIN Project p ON (p.Projectid==mp.projectid)"
-            + "WHERE m.mitarbeiterid='"+mitarbeiterid+"';";
+                    + "WHERE m.mitarbeiterid='" + mitarbeiterid + "'"
+                    + "ORDER BY Projectid;";
             ResultSet rs = stat.executeQuery(sqlString);
- SimpleDateFormat  sdf = new SimpleDateFormat("dd.MM.yyyy");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
             while (rs.next()) {
-              projekte.add(new Projekt(rs.getInt(1),rs.getString(2),sdf.parse(rs.getDate(3).toString()),sdf.parse(rs.getDate(4).toString())));
+                projekte.add(new Projekt(rs.getInt(1), rs.getString(2), sdf.parse(rs.getDate(3).toString()), sdf.parse(rs.getDate(4).toString())));
             }
             stat.close();
         } catch (SQLException ex) {
             Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParseException ex) {
-           Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
-       }
-     return projekte;
+            Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return projekte;
+    }
 }
-}
-
-    

@@ -63,4 +63,8 @@ public class Mitarbeiter {
     public void setPasswort(String passwort) {
         this.passwort = passwort;
     }
+
+    public void setid(int i) {
+        this.id=i;
+    }
 }

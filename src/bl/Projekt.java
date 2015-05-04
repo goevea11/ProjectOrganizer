@@ -8,13 +8,19 @@ public class Projekt {
     private String name;
     private Date anfangsdatum,enddatum;
 
-    public Projekt(int projektid, String name, Date anfangsdatum, Date enddatum) {
-        this.projektid = projektid;
+    public Projekt(String name, Date anfangsdatum, Date enddatum) {
+       
         this.name = name;
         this.anfangsdatum = anfangsdatum;
         this.enddatum = enddatum;
     }
 
+     public Projekt(int projektid, String name, Date anfangsdatum, Date enddatum) {
+       this.projektid=projektid;
+        this.name = name;
+        this.anfangsdatum = anfangsdatum;
+        this.enddatum = enddatum;
+    }
     public int getProjektid() {
         return projektid;
     }

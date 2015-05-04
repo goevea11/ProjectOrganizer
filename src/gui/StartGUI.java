@@ -87,6 +87,7 @@ public class StartGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnloginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnloginActionPerformed
+
         if(access.checkMitarbeiter(this.tfname.getText(),this.tfpassword.getText()).equals(this.tfname.getText())){
             JOptionPane.showMessageDialog(this, "\"login erfolgreich\"");
             int mid= access.getMitarbeiter(tfname.getText(), this.tfpassword.getText());
