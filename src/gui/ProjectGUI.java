@@ -5,6 +5,14 @@
  */
 package gui;
 
+import bl.Projekt;
+import database.DBAccess;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Domi
@@ -14,8 +22,25 @@ public class ProjectGUI extends javax.swing.JFrame {
     /**
      * Creates new form ProjectGUI
      */
+    LinkedList<Projekt> ll;
+    DBAccess dba;
+
     public ProjectGUI() {
         initComponents();
+        try {
+            dba = new DBAccess("proorg");
+        } catch (IOException ex) {
+            Logger.getLogger(ProjectGUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ProjectGUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(ProjectGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    ProjectGUI(int mid) {
+        new ProjectGUI();
+        ll = dba.getProjects(mid);
     }
 
     /**
