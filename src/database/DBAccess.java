@@ -131,7 +131,7 @@ public void insertProjekt(Projekt p, Mitarbeiter gründer){
 }
 
 
-public LinkedList<Projekt> getProjekte(String mitarbeiterid){
+public LinkedList<Projekt> getProjekte(int mitarbeiterid){
     
     LinkedList<Projekt> projekte=new LinkedList<Projekt>();
     //Zuerst Mitarbeitet, MitarbeiterProject und Project joinen
