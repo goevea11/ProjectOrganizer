@@ -9,9 +9,12 @@ import bl.Projekt;
 import database.DBAccess;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.table.AbstractTableModel;
 
 /**
  *
@@ -24,7 +27,7 @@ public class ProjectGUI extends javax.swing.JFrame {
      */
     LinkedList<Projekt> ll;
     DBAccess dba;
-
+    
     public ProjectGUI() {
         initComponents();
         try {
@@ -36,8 +39,45 @@ public class ProjectGUI extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(ProjectGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
+        jTable1.setModel(new AbstractTableModel() {
+            private String[] colName = new String[]{"Titel", "Beginn", "Ende"};
+            
+            @Override
+            public int getRowCount() {
+                return ll.size();
+            }
+            
+            @Override
+            public int getColumnCount() {
+                return colName.length;
+            }
 
+            @Override
+            public String getColumnName(int column) {
+                return colName[column]; //To change body of generated methods, choose Tools | Templates.
+            }
+            
+            @Override
+            public Object getValueAt(int rowIndex, int columnIndex) {
+                Projekt s = ll.get(rowIndex);
+                SimpleDateFormat sdf= new SimpleDateFormat("dd.MM.yyyy");
+                switch (columnIndex) {
+                    case 0:
+                        return s.getName();
+                    case 1:
+                        Date d = s.getAnfangsdatum();
+                        
+                        return sdf.format(d);
+                    case 2:
+                        Date da = s.getEnddatum();
+                        
+                        return sdf.format(da);
+                }
+                return "";
+            }
+        });
+    }
+    
     ProjectGUI(int mid) {
         new ProjectGUI();
         ll = dba.getProjekte(mid);
@@ -52,18 +92,27 @@ public class ProjectGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder("Projekte"));
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -104,5 +153,7 @@ public class ProjectGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }
