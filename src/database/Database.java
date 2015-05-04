@@ -15,10 +15,10 @@ public class Database {
     public Connection getCon() {
         return con;
     }
-    private String DB_Driver="";
-    private String DB_Username="";
-    private String DB_Password="";
-    private String DB_Url="";
+    private String DB_Driver="org.postgresql.Driver";
+    private String DB_Username="postgres";
+    private String DB_Password="postgres";
+    private String DB_Url="jdbc:postgresql://localhost/";
     Connection con;
     
     private final String fileName=System.getProperty("user.dir")
