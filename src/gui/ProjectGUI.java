@@ -7,7 +7,6 @@ package gui;
 
 import bl.Projekt;
 import database.DBAccess;
-import java.awt.Component;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -15,9 +14,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.Renderer;
+import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableCellRenderer;
 
 /**
  *
@@ -43,7 +41,7 @@ public class ProjectGUI extends javax.swing.JFrame {
             Logger.getLogger(ProjectGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
         jTable1.setModel(new AbstractTableModel() {
-            private String[] colName = new String[]{"Titel", "Beginn", "Ende"};
+            private String[] colName = new String[]{"Number","Titel", "Beginn", "Ende"};
             
             @Override
             public int getRowCount() {
@@ -66,13 +64,15 @@ public class ProjectGUI extends javax.swing.JFrame {
                 SimpleDateFormat sdf= new SimpleDateFormat("dd.MM.yyyy");
                 switch (columnIndex) {
                     case 0:
-                        return s.getName();
+                        return s.getProjektid();
                     case 1:
+                        return s.getName();
+                    case 2:
                         Date d = s.getAnfangsdatum();
                         
                         return sdf.format(d);
-                    case 2:
-                        Date da = s.getEnddatum();
+                    case 3: 
+                         Date da = s.getEnddatum();
                         
                         return sdf.format(da);
                 }
@@ -114,12 +114,23 @@ public class ProjectGUI extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        JTable t = (JTable) evt.getComponent();
+        int row = t.getSelectedRow();
+        
+    }//GEN-LAST:event_jTable1MouseClicked
 
     /**
      * @param args the command line arguments
