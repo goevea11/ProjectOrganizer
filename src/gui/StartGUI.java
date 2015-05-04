@@ -89,8 +89,15 @@ public class StartGUI extends javax.swing.JFrame {
     private void btnloginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnloginActionPerformed
         if(access.checkMitarbeiter(this.tfname.getText(),this.tfpassword.getText()).equals(this.tfname.getText())){
             JOptionPane.showMessageDialog(this, "\"login erfolgreich\"");
-            ProjectGUI projectgui=new ProjectGUI();
+            int mid= access.getMitarbeiter(tfname.getText(), this.tfpassword.getText());
+            ProjectGUI projectgui=new ProjectGUI(mid);
             projectgui.setVisible(true);
+            this.dispose();
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Bitte erneut versuchen!");
+            tfpassword.setText("");
         }
     }//GEN-LAST:event_btnloginActionPerformed
 
