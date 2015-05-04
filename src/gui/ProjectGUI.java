@@ -7,6 +7,7 @@ package gui;
 
 import bl.Projekt;
 import database.DBAccess;
+import java.awt.Component;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -14,7 +15,9 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Renderer;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableCellRenderer;
 
 /**
  *
@@ -56,7 +59,7 @@ public class ProjectGUI extends javax.swing.JFrame {
             public String getColumnName(int column) {
                 return colName[column]; //To change body of generated methods, choose Tools | Templates.
             }
-            
+             
             @Override
             public Object getValueAt(int rowIndex, int columnIndex) {
                 Projekt s = ll.get(rowIndex);
@@ -76,6 +79,7 @@ public class ProjectGUI extends javax.swing.JFrame {
                 return "";
             }
         });
+       
     }
     
     ProjectGUI(int mid) {
