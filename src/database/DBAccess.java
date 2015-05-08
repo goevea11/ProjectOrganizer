@@ -28,7 +28,17 @@ public class DBAccess {
             Mitarbeiter admin = new Mitarbeiter("admin", "admin", new Date(), "1234");
             admin.setid(1);
             // dba.insertMitarbeiter(admin);
-            dba.insertProjekt(new Projekt(1, "adminproject", new Date(), new Date()), admin);
+            //dba.insertProjekt(new Projekt(1, "adminproject", new Date(), new Date()), admin);
+            LinkedList<Projekt> projekte=dba.getProjekte(admin.getId());
+                    
+             for(Projekt p:projekte){
+                 System.out.println(p.getProjektid()+"|"+p.getName());
+             }
+       
+                    
+                    
+                    
+                    
         } catch (IOException ex) {
             Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
@@ -120,7 +130,7 @@ public class DBAccess {
            //(SELECT MAX(Projectid) FROM \"Project\")+1
             //Projekt einfügen
             String sqlString = "INSERT INTO \"Project\""
-                    + " VALUES ((SELECT MAX(Projectid) FROM \"Project\")+1, '" + p.getName() + "', TO_DATE('" + sdf.format(p.getAnfangsdatum()) + "','dd.MM.yyyy'),TO_DATE('" + sdf.format(p.getAnfangsdatum()) + "','dd.MM.yyyy'));";
+                    + " VALUES ((SELECT MAX(projectid) FROM \"Project\")+1, '" + p.getName() + "', TO_DATE('" + sdf.format(p.getAnfangsdatum()) + "','dd.MM.yyyy'),TO_DATE('" + sdf.format(p.getAnfangsdatum()) + "','dd.MM.yyyy'));";
            
             stat.executeUpdate(sqlString);
 
@@ -136,17 +146,18 @@ public class DBAccess {
 
    
 
-public LinkedList<Projekt> getProjekte(int mitarbeiterid){
-    
+public LinkedList<Projekt> getProjekte(int id){
+ 
     LinkedList<Projekt> projekte=new LinkedList<Projekt>();
     //Zuerst Mitarbeitet, MitarbeiterProject und Project joinen
   try {
             Statement stat = db.getCon().createStatement();
-            String sqlString = "SELECT Projectid, Name, anfangsdatum, enddatum "
-                    + "FROM \"Mitarbeiter\" m INNER JOIN \"MitarbeiterProject\" mp ON(m.mitarbeiterid==mp.mitarbeiterid)"
-                    + " INNER JOIN Project p ON (p.Projectid==mp.projectid)"
-                    + "WHERE m.mitarbeiterid='" + mitarbeiterid + "'"
+            String sqlString = "SELECT \"Projectid\" , \"Name\" , \"anfangsdatum\" , \"enddatum\" "
+                    + "FROM \"Mitarbeiter\" m INNER JOIN \"MitarbeiterProject\" mp ON(m.mitarbeiterid=mp.mitarbeiterid)"
+                    + " INNER JOIN \"Project\" p ON (\"p.projectid\"=mp.projectid)"
+                    + "WHERE m.mitarbeiterid=" + id + " "
                     + "ORDER BY Projectid;";
+            System.out.println(sqlString);
             ResultSet rs = stat.executeQuery(sqlString);
             SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
             while (rs.next()) {

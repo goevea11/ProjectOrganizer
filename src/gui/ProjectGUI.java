@@ -26,11 +26,12 @@ public class ProjectGUI extends javax.swing.JFrame {
     /**
      * Creates new form ProjectGUI
      */
-    LinkedList<Projekt> ll;
+    LinkedList<Projekt> projekte;
     DBAccess dba;
     
-    public ProjectGUI() {
+    public ProjectGUI(int mid) {
         initComponents();
+          projekte = dba.getProjekte(mid);
         try {
             dba = new DBAccess("proorg");
         } catch (IOException ex) {
@@ -82,10 +83,7 @@ public class ProjectGUI extends javax.swing.JFrame {
        
     }
     
-    ProjectGUI(int mid) {
-        new ProjectGUI();
-        ll = dba.getProjekte(mid);
-    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -162,7 +160,7 @@ public class ProjectGUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ProjectGUI().setVisible(true);
+                new ProjectGUI(1).setVisible(true);
             }
         });
     }
