@@ -26,12 +26,12 @@ public class ProjectGUI extends javax.swing.JFrame {
     /**
      * Creates new form ProjectGUI
      */
-    LinkedList<Projekt> projekte;
+    LinkedList<Projekt> ll;
     DBAccess dba;
     
     public ProjectGUI(int mid) {
         initComponents();
-          projekte = dba.getProjekte(mid);
+          ll = dba.getProjekte(mid);
         try {
             dba = new DBAccess("proorg");
         } catch (IOException ex) {
