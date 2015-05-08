@@ -152,9 +152,9 @@ public LinkedList<Projekt> getProjekte(int id){
     //Zuerst Mitarbeitet, MitarbeiterProject und Project joinen
   try {
             Statement stat = db.getCon().createStatement();
-            String sqlString = "SELECT \"Projectid\" , \"Name\" , \"anfangsdatum\" , \"enddatum\" "
+            String sqlString = "SELECT p.projectid, p.name , p.anfangsdatum , p.enddatum "
                     + "FROM \"Mitarbeiter\" m INNER JOIN \"MitarbeiterProject\" mp ON(m.mitarbeiterid=mp.mitarbeiterid)"
-                    + " INNER JOIN \"Project\" p ON (\"p.projectid\"=mp.projectid)"
+                    + " INNER JOIN \"Project\" p ON (p.projectid=mp.projectid)"
                     + "WHERE m.mitarbeiterid=" + id + " "
                     + "ORDER BY Projectid;";
             System.out.println(sqlString);

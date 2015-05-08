@@ -92,6 +92,7 @@ public class StartGUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "\"login erfolgreich\"");
             int mid= access.getMitarbeiter(tfname.getText(), this.tfpassword.getText());
             ProjectGUI projectgui=new ProjectGUI(mid);
+            projectgui.setDBAccess(access);
             projectgui.setVisible(true);
             this.dispose();
         }

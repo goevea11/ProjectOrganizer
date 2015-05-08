@@ -5,6 +5,7 @@
  */
 package gui;
 
+import bl.ProjectTableModel;
 import bl.Projekt;
 import database.DBAccess;
 import java.io.IOException;
@@ -28,12 +29,25 @@ public class ProjectGUI extends javax.swing.JFrame {
      */
     LinkedList<Projekt> ll;
     DBAccess dba;
+    ProjectTableModel prtablemodel;
+   
     
     public ProjectGUI(int mid) {
-        initComponents();
-          ll = dba.getProjekte(mid);
         try {
-            dba = new DBAccess("proorg");
+            initComponents();
+            dba=new DBAccess("proorg");
+            ll = dba.getProjekte(mid);
+            prtablemodel=new ProjectTableModel(ll);
+            jTable1.setModel(prtablemodel);
+            try {
+                dba = new DBAccess("proorg");
+            } catch (IOException ex) {
+                Logger.getLogger(ProjectGUI.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(ProjectGUI.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(ProjectGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } catch (IOException ex) {
             Logger.getLogger(ProjectGUI.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
@@ -41,45 +55,7 @@ public class ProjectGUI extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(ProjectGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-        jTable1.setModel(new AbstractTableModel() {
-            private String[] colName = new String[]{"Number","Titel", "Beginn", "Ende"};
-            
-            @Override
-            public int getRowCount() {
-                return ll.size();
-            }
-            
-            @Override
-            public int getColumnCount() {
-                return colName.length;
-            }
-
-            @Override
-            public String getColumnName(int column) {
-                return colName[column]; //To change body of generated methods, choose Tools | Templates.
-            }
-             
-            @Override
-            public Object getValueAt(int rowIndex, int columnIndex) {
-                Projekt s = ll.get(rowIndex);
-                SimpleDateFormat sdf= new SimpleDateFormat("dd.MM.yyyy");
-                switch (columnIndex) {
-                    case 0:
-                        return s.getProjektid();
-                    case 1:
-                        return s.getName();
-                    case 2:
-                        Date d = s.getAnfangsdatum();
-                        
-                        return sdf.format(d);
-                    case 3: 
-                         Date da = s.getEnddatum();
-                        
-                        return sdf.format(da);
-                }
-                return "";
-            }
-        });
+      
        
     }
     
