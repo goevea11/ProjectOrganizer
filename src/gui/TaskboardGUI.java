@@ -29,9 +29,14 @@ public class TaskboardGUI extends javax.swing.JFrame {
     private DefaultListModel inworkmodel;
     private DefaultListModel finishedmodel;
     private DBAccess dba;
-    public TaskboardGUI() {
+    private LinkedList<Arbeitsschritt> todolist;
+    private LinkedList<Arbeitsschritt> inworklist;
+    private LinkedList<Arbeitsschritt> finishedlist;
+    private Projekt p;
+    public TaskboardGUI(Projekt projekt) {
         try {
             initComponents();
+             p= projekt;
             todomodel = new DefaultListModel();
             this.todoList.setModel(todomodel);
             inworkmodel = new DefaultListModel();
@@ -39,7 +44,12 @@ public class TaskboardGUI extends javax.swing.JFrame {
             finishedmodel = new DefaultListModel();
             this.finishedList.setModel(finishedmodel);
             dba= new DBAccess("proorg");
-           // LinkedList<Arbeitsschritt> todo=dba.getToDo();
+            todolist = dba.getToDoList(p.getProjektid());
+            inworklist = dba.getInWorkList(p.getProjektid());
+            finishedlist = dba.getFinishedList(p.getProjektid());
+            this.todomodel.addElement(todolist);
+            this.inworkmodel.addElement(inworklist);
+            this.finishedmodel.addElement(finishedlist);
         } catch (IOException ex) {
             Logger.getLogger(TaskboardGUI.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
@@ -50,6 +60,8 @@ public class TaskboardGUI extends javax.swing.JFrame {
         
     }
 
+
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -60,6 +72,7 @@ public class TaskboardGUI extends javax.swing.JFrame {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        jPanel6 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         todoList = new javax.swing.JList();
@@ -79,6 +92,8 @@ public class TaskboardGUI extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridLayout(1, 5));
 
+        jPanel6.setLayout(new java.awt.GridLayout(1, 5));
+
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder("TO DO"));
@@ -92,7 +107,7 @@ public class TaskboardGUI extends javax.swing.JFrame {
 
         jPanel1.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        getContentPane().add(jPanel1);
+        jPanel6.add(jPanel1);
 
         jPanel2.setLayout(new java.awt.GridBagLayout());
 
@@ -115,7 +130,7 @@ public class TaskboardGUI extends javax.swing.JFrame {
         gridBagConstraints.gridy = 1;
         jPanel2.add(todo_inwork_left, gridBagConstraints);
 
-        getContentPane().add(jPanel2);
+        jPanel6.add(jPanel2);
 
         jPanel3.setLayout(new java.awt.BorderLayout());
 
@@ -130,7 +145,7 @@ public class TaskboardGUI extends javax.swing.JFrame {
 
         jPanel3.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
-        getContentPane().add(jPanel3);
+        jPanel6.add(jPanel3);
 
         jPanel4.setLayout(new java.awt.GridBagLayout());
 
@@ -153,7 +168,7 @@ public class TaskboardGUI extends javax.swing.JFrame {
         gridBagConstraints.gridy = 1;
         jPanel4.add(inwork_finished_left, gridBagConstraints);
 
-        getContentPane().add(jPanel4);
+        jPanel6.add(jPanel4);
 
         jPanel5.setLayout(new java.awt.BorderLayout());
 
@@ -168,7 +183,9 @@ public class TaskboardGUI extends javax.swing.JFrame {
 
         jPanel5.add(jScrollPane3, java.awt.BorderLayout.CENTER);
 
-        getContentPane().add(jPanel5);
+        jPanel6.add(jPanel5);
+
+        getContentPane().add(jPanel6);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -235,6 +252,7 @@ public class TaskboardGUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
