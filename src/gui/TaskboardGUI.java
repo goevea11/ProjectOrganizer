@@ -237,7 +237,7 @@ public class TaskboardGUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TaskboardGUI().setVisible(true);
+                //new TaskboardGUI().setVisible(true);
             }
         });
     }
