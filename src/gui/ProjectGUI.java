@@ -35,6 +35,8 @@ public class ProjectGUI extends javax.swing.JFrame {
     public ProjectGUI(int mid) {
         try {
             initComponents();
+            TaskboardGUI tgui;
+            tgui = new TaskboardGUI(new Projekt(123,"testproject",new Date(), new Date(2016, 01, 14)));
             dba=new DBAccess("proorg");
             ll = dba.getProjekte(mid);
             prtablemodel=new ProjectTableModel(ll);
