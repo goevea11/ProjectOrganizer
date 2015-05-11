@@ -5,8 +5,15 @@
  */
 package gui;
 
+import bl.Projekt;
+import database.DBAccess;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
-
+import bl.Arbeitsschritt;
 /**
  *
  * @author Veronika
@@ -21,15 +28,26 @@ public class TaskboardGUI extends javax.swing.JFrame {
     private DefaultListModel todomodel;
     private DefaultListModel inworkmodel;
     private DefaultListModel finishedmodel;
-    
+    private DBAccess dba;
     public TaskboardGUI() {
-        initComponents();
-        todomodel = new DefaultListModel();
-        this.todoList.setModel(todomodel);
-        inworkmodel = new DefaultListModel();
-        this.inworkList.setModel(inworkmodel);
-        finishedmodel = new DefaultListModel();
-        this.finishedList.setModel(finishedmodel);
+        try {
+            initComponents();
+            todomodel = new DefaultListModel();
+            this.todoList.setModel(todomodel);
+            inworkmodel = new DefaultListModel();
+            this.inworkList.setModel(inworkmodel);
+            finishedmodel = new DefaultListModel();
+            this.finishedList.setModel(finishedmodel);
+            dba= new DBAccess("proorg");
+           // LinkedList<Arbeitsschritt> todo=dba.getToDo();
+        } catch (IOException ex) {
+            Logger.getLogger(TaskboardGUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(TaskboardGUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(TaskboardGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 
     /**
