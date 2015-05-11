@@ -26,20 +26,13 @@ public class DBAccess {
     public static void main(String[] args) {
         try {
             DBAccess dba = new DBAccess("proorg");
-            Mitarbeiter admin = new Mitarbeiter("admin", "admin", new Date(), "1234");
-            admin.setid(1);
-            // dba.insertMitarbeiter(admin);
-            //dba.insertProjekt(new Projekt(1, "adminproject", new Date(), new Date()), admin);
-            LinkedList<Projekt> projekte=dba.getProjekte(admin.getId());
-                    
-             for(Projekt p:projekte){
-                 System.out.println(p.getProjektid()+"|"+p.getName());
-             }
-       
-                    
-                    
-                    
-                    
+
+            LinkedList<Arbeitsschritt> a = dba.getToDoList(1);
+
+            for (Arbeitsschritt p : a) {
+                System.out.println(p.getText());
+            }
+
         } catch (IOException ex) {
             Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
@@ -128,11 +121,11 @@ public class DBAccess {
 
             Statement stat = db.getCon().createStatement();
 
-           //(SELECT MAX(Projectid) FROM \"Project\")+1
+            //(SELECT MAX(Projectid) FROM \"Project\")+1
             //Projekt einfügen
             String sqlString = "INSERT INTO \"projekt\""
                     + " VALUES ((SELECT MAX(projektid) FROM \"projekt\")+1, '" + p.getName() + "', TO_DATE('" + sdf.format(p.getAnfangsdatum()) + "','dd.MM.yyyy'),TO_DATE('" + sdf.format(p.getAnfangsdatum()) + "','dd.MM.yyyy'));";
-           
+
             stat.executeUpdate(sqlString);
 
             //Verbindung zwischen Mitarbeiter und Projektersteller hersteller
@@ -145,17 +138,15 @@ public class DBAccess {
         }
     }
 
-   
+    public LinkedList<Projekt> getProjekte(int id) {
 
-public LinkedList<Projekt> getProjekte(int id){
- 
-    LinkedList<Projekt> projekte=new LinkedList<Projekt>();
-    //Zuerst Mitarbeitet, MitarbeiterProject und Project joinen
-  try {
+        LinkedList<Projekt> projekte = new LinkedList<Projekt>();
+        //Zuerst Mitarbeitet, MitarbeiterProject und Project joinen
+        try {
             Statement stat = db.getCon().createStatement();
             String sqlString = "SELECT p.projektid, p.name , p.begindate , p.enddate "
                     + "FROM verwaltung"
-                    + "WHERE mitarbeiterid ='"+id+"';";
+                    + "WHERE mitarbeiterid ='" + id + "';";
             System.out.println(sqlString);
             ResultSet rs = stat.executeQuery(sqlString);
             SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
@@ -171,15 +162,64 @@ public LinkedList<Projekt> getProjekte(int id){
         return projekte;
     }
 
-    public LinkedList<Arbeitsschritt> getToDoList(int projektid) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public LinkedList<Arbeitsschritt> getToDoList(int id) {
+
+        LinkedList<Arbeitsschritt> l = new LinkedList<Arbeitsschritt>();
+        try {
+            Statement stat = db.getCon().createStatement();
+            String sqlString = "SELECT arbeitsschrittid, progress , bezeichnung , text "
+                    + "FROM arbeitsschritt"
+                    + " WHERE projektid ='" + id + "' AND progress=0;";
+
+            ResultSet rs = stat.executeQuery(sqlString);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+            while (rs.next()) {
+                l.add(new Arbeitsschritt(rs.getInt(1), id, rs.getInt(2), rs.getString(3), rs.getString(4)));
+            }
+            stat.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return l;
     }
 
-    public LinkedList<Arbeitsschritt> getInWorkList(int projektid) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public LinkedList<Arbeitsschritt> getInWorkList(int id) {
+        LinkedList<Arbeitsschritt> l = new LinkedList<Arbeitsschritt>();
+        try {
+            Statement stat = db.getCon().createStatement();
+            String sqlString = "SELECT arbeitsschrittid, progress , bezeichnung , text "
+                    + "FROM arbeitsschritt"
+                    + " WHERE projektid ='" + id + "' AND progress=;";
+
+            ResultSet rs = stat.executeQuery(sqlString);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+            while (rs.next()) {
+                l.add(new Arbeitsschritt(rs.getInt(1), id, rs.getInt(2), rs.getString(3), rs.getString(4)));
+            }
+            stat.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return l;
     }
 
-    public LinkedList<Arbeitsschritt> getFinishedList(int projektid) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public LinkedList<Arbeitsschritt> getFinishedList(int id) {
+        LinkedList<Arbeitsschritt> l = new LinkedList<Arbeitsschritt>();
+        try {
+            Statement stat = db.getCon().createStatement();
+            String sqlString = "SELECT arbeitsschrittid, progress , bezeichnung , text "
+                    + "FROM arbeitsschritt"
+                    + " WHERE projektid ='" + id + "' AND progress=2;";
+
+            ResultSet rs = stat.executeQuery(sqlString);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+            while (rs.next()) {
+                l.add(new Arbeitsschritt(rs.getInt(1), id, rs.getInt(2), rs.getString(3), rs.getString(4)));
+            }
+            stat.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return l;
     }
 }
