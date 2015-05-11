@@ -68,9 +68,9 @@ public class DBAccess {
             SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
             String date = sdf.format(d);
             Statement stat = db.getCon().createStatement();
-            String sqlString = "INSERT INTO \"Mitarbeiter\"(\n"
-                    + "            mitarbeiterid, vorname, nachname, geburtsdatum, passwort)\n"
-                    + "    VALUES ((SELECT MAX(mitarbeiterid) FROM \"Mitarbeiter\")+1, '" + vn + "', '" + nn + "', TO_DATE('" + date + "','dd.MM.yyyy'), '" + pw + "');";
+            String sqlString = "INSERT INTO \"mitarbeiter\"(\n"
+                    + "            mitarbeiterid, name, firstname, birthdate, password)\n"
+                    + "    VALUES ((SELECT MAX(mitarbeiterid) FROM \"mitarbeiter\")+1, '" + vn + "', '" + nn + "', TO_DATE('" + date + "','dd.MM.yyyy'), '" + pw + "');";
             stat.executeUpdate(sqlString);
             stat.close();
         } catch (SQLException ex) {
@@ -82,7 +82,7 @@ public class DBAccess {
         int ma = 0;
         try {
             Statement stat = db.getCon().createStatement();
-            String sqlString = "SELECT mitarbeiterid FROM \"Mitarbeiter\" WHERE passwort='" + passwort + "' AND nachname='" + nachname + "';";
+            String sqlString = "SELECT mitarbeiterid FROM \"mitarbeiter\" WHERE password='" + passwort + "' AND firstname='" + nachname + "';";
 
             ResultSet rs = stat.executeQuery(sqlString);
 
@@ -101,7 +101,7 @@ public class DBAccess {
 
         try {
             Statement stat = db.getCon().createStatement();
-            String sqlString = "SElECT nachname FROM \"Mitarbeiter\" WHERE passwort='" + passwort + "' AND nachname='" + nachname + "';";
+            String sqlString = "SElECT firstname FROM \"mitarbeiter\" WHERE password='" + passwort + "' AND firstname='" + nachname + "';";
             ResultSet rs = stat.executeQuery(sqlString);
 
             if (rs.next()) {
@@ -129,8 +129,8 @@ public class DBAccess {
 
            //(SELECT MAX(Projectid) FROM \"Project\")+1
             //Projekt einfügen
-            String sqlString = "INSERT INTO \"Project\""
-                    + " VALUES ((SELECT MAX(projectid) FROM \"Project\")+1, '" + p.getName() + "', TO_DATE('" + sdf.format(p.getAnfangsdatum()) + "','dd.MM.yyyy'),TO_DATE('" + sdf.format(p.getAnfangsdatum()) + "','dd.MM.yyyy'));";
+            String sqlString = "INSERT INTO \"projekt\""
+                    + " VALUES ((SELECT MAX(projektid) FROM \"projekt\")+1, '" + p.getName() + "', TO_DATE('" + sdf.format(p.getAnfangsdatum()) + "','dd.MM.yyyy'),TO_DATE('" + sdf.format(p.getAnfangsdatum()) + "','dd.MM.yyyy'));";
            
             stat.executeUpdate(sqlString);
 
@@ -152,11 +152,9 @@ public LinkedList<Projekt> getProjekte(int id){
     //Zuerst Mitarbeitet, MitarbeiterProject und Project joinen
   try {
             Statement stat = db.getCon().createStatement();
-            String sqlString = "SELECT p.projectid, p.name , p.anfangsdatum , p.enddatum "
-                    + "FROM \"Mitarbeiter\" m INNER JOIN \"MitarbeiterProject\" mp ON(m.mitarbeiterid=mp.mitarbeiterid)"
-                    + " INNER JOIN \"Project\" p ON (p.projectid=mp.projectid)"
-                    + "WHERE m.mitarbeiterid=" + id + " "
-                    + "ORDER BY Projectid;";
+            String sqlString = "SELECT p.projektid, p.name , p.begindate , p.enddate "
+                    + "FROM verwaltung"
+                    + "WHERE mitarbeiterid ='"+id+"';";
             System.out.println(sqlString);
             ResultSet rs = stat.executeQuery(sqlString);
             SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");

@@ -29,7 +29,7 @@ public class NewMitarbeiter extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         isOk=false;
-        dateformat=new SimpleDateFormat("DD.MM.YYYY");
+        dateformat=new SimpleDateFormat("dd.MM.yyyy");
     }
 
     /**
