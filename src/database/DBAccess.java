@@ -1,5 +1,6 @@
 package database;
 
+import bl.Arbeitsschritt;
 import bl.Mitarbeiter;
 import bl.Projekt;
 import java.io.FileNotFoundException;
@@ -168,5 +169,17 @@ public LinkedList<Projekt> getProjekte(int id){
             Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
         }
         return projekte;
+    }
+
+    public LinkedList<Arbeitsschritt> getToDoList(int projektid) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public LinkedList<Arbeitsschritt> getInWorkList(int projektid) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public LinkedList<Arbeitsschritt> getFinishedList(int projektid) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
