@@ -113,7 +113,7 @@ public class DBAccess {
         return returnname;
     }
 
-    public void insertProjekt(Projekt p, Mitarbeiter gründer) {
+    public void insertProjekt(Projekt p, int gründerid) {
 
         try {
 
@@ -121,21 +121,68 @@ public class DBAccess {
 
             Statement stat = db.getCon().createStatement();
 
-            //(SELECT MAX(Projectid) FROM \"Project\")+1
+            
             //Projekt einfügen
             String sqlString = "INSERT INTO \"projekt\""
                     + " VALUES ((SELECT MAX(projektid) FROM \"projekt\")+1, '" + p.getName() + "', TO_DATE('" + sdf.format(p.getAnfangsdatum()) + "','dd.MM.yyyy'),TO_DATE('" + sdf.format(p.getAnfangsdatum()) + "','dd.MM.yyyy'));";
 
-            stat.executeUpdate(sqlString);
-
-            //Verbindung zwischen Mitarbeiter und Projektersteller hersteller
-            sqlString = "INSERT INTO  \"MitarbeiterProject\" "
-                    + "VALUES((SELECT MAX(Projectid) FROM \"Project\")+1, " + gründer.getId() + ");";
-            stat.executeUpdate(sqlString);
-            stat.close();
+           
+              stat.executeUpdate(sqlString);
+            //Verbindung zwischen Mitarbeiter und Projekt herstellen
+         //1. Projektnummer herausholen
+             p.setProjektid(this.getProjektId(p.getName()));
+             
+             //2. Arbeitsschritt zur Erstellung des Projektes einfügen
+             String bezeichnung="Projekterstellung";
+             sqlString="INSERT INTO arbeitsschritt "
+                     + "VALUES ((SELECT MAX(arbeitsschrittid) FROM arbeitsschritt)+1,"+p.getProjektid()+", '"+bezeichnung+"', 'Erstellung von "+p.getName()+"', 2);";
+          stat.executeUpdate(sqlString);
+           int arbeitsschrittid=this.getArbeitsschrittId(bezeichnung,p.getProjektid());
+           
+           //3. Datensatz in Verwaltung einfügen
+           
+           sqlString="INSERT INTO verwaltung VALUES("+gründerid+","+arbeitsschrittid+","+p.getProjektid()+");";
+           stat.executeUpdate(sqlString);
+           stat.close();
         } catch (SQLException ex) {
             Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    
+    public int getArbeitsschrittId(String bezeichnung, int projektid){
+      String sqlString=" SELECT arbeitsschrittid "
+               + "FROM \"arbeitsschritt\""
+               + "WHERE bezeichnung='"+bezeichnung+"' AND projektid="+projektid+";";
+       
+        try {
+             Statement stat = db.getCon().createStatement();    
+       ResultSet rs = stat.executeQuery(sqlString);
+            while (rs.next()) {
+                return rs.getInt(1);
+            }  
+        } catch (SQLException ex) {
+            Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;  
+        
+    }
+    
+    public int getProjektId(String name){
+       String sqlString=" SELECT projektid "
+               + "FROM \"projekt\""
+               + "WHERE name='"+name+"';";
+       
+        try {
+             Statement stat = db.getCon().createStatement();    
+       ResultSet rs = stat.executeQuery(sqlString);
+            while (rs.next()) {
+                return rs.getInt(1);
+            }  
+        } catch (SQLException ex) {
+            Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
     }
 
     public LinkedList<Projekt> getProjekte(int id) {
@@ -144,19 +191,28 @@ public class DBAccess {
         //Zuerst Mitarbeitet, MitarbeiterProject und Project joinen
         try {
             Statement stat = db.getCon().createStatement();
-            String sqlString = "SELECT p.projektid, p.name , p.begindate , p.enddate "
-                    + "FROM verwaltung"
-                    + "WHERE mitarbeiterid ='" + id + "';";
+//            String sqlString = "SELECT projektid, name , begindate , enddate "
+//                    + "FROM projekt "
+//                    + "WHERE projektid = (SELECT projektid "
+//                    + "FROM verwaltung "
+//                    + "WHERE mitarbeiterid = " + id + ");";
+            
+            
+            String sqlString="SELECT p.projektid, p.name , p.begindate , p.enddate "
+                    + "FROM projekt p INNER JOIN verwaltung v ON(p.projektid=v.projektid) "
+                    + "WHERE v.mitarbeiterid = "+id+";";
             System.out.println(sqlString);
             ResultSet rs = stat.executeQuery(sqlString);
             SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
             while (rs.next()) {
-                projekte.add(new Projekt(rs.getInt(1), rs.getString(2), sdf.parse(rs.getDate(3).toString()), sdf.parse(rs.getDate(4).toString())));
+               java.sql.Date sqlbeginndate=rs.getDate(3);
+                java.sql.Date sqlenddate=rs.getDate(4);
+                Date beginndate=new Date(sqlbeginndate.getTime());
+                 Date enddate=new Date(sqlenddate.getTime());
+                projekte.add(new Projekt(rs.getInt(1), rs.getString(2), beginndate, enddate));
             }
             stat.close();
         } catch (SQLException ex) {
-            Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ParseException ex) {
             Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
         }
         return projekte;
@@ -189,7 +245,7 @@ public class DBAccess {
             Statement stat = db.getCon().createStatement();
             String sqlString = "SELECT arbeitsschrittid, progress , bezeichnung , text "
                     + "FROM arbeitsschritt"
-                    + " WHERE projektid ='" + id + "' AND progress=;";
+                    + " WHERE projektid ='" + id + "' AND progress=1;";
 
             ResultSet rs = stat.executeQuery(sqlString);
             SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");

@@ -27,17 +27,22 @@ public class ProjectGUI extends javax.swing.JFrame {
     /**
      * Creates new form ProjectGUI
      */
-    LinkedList<Projekt> ll;
-    DBAccess dba;
-    ProjectTableModel prtablemodel;
+   private LinkedList<Projekt> ll;
+   private DBAccess dba;
+   private ProjectTableModel prtablemodel;
+    private NeuesProjekt newprojectdialog;
+    private int gründerid;
    
     
     public ProjectGUI(int mid) {
         try {
             initComponents();
             TaskboardGUI tgui;
-            tgui = new TaskboardGUI(new Projekt(123,"testproject",new Date(), new Date(2016, 01, 14)));
+            //tgui = new TaskboardGUI(new Projekt(123,"testproject",new Date(), new Date(2016, 01, 14)));
+            gründerid=mid;
             dba=new DBAccess("proorg");
+            newprojectdialog=new NeuesProjekt(this,true);
+            
             ll = dba.getProjekte(mid);
             prtablemodel=new ProjectTableModel(ll);
             jTable1.setModel(prtablemodel);
@@ -61,7 +66,9 @@ public class ProjectGUI extends javax.swing.JFrame {
        
     }
     
-    
+     void setDBAccess(DBAccess access) {
+     this.dba=access;  
+     }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -74,6 +81,8 @@ public class ProjectGUI extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        panbtns = new javax.swing.JPanel();
+        btncreateProjekt = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -99,14 +108,36 @@ public class ProjectGUI extends javax.swing.JFrame {
 
         getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
+        panbtns.setLayout(new java.awt.GridLayout(1, 2));
+
+        btncreateProjekt.setText("Erstelle neues Projekt");
+        btncreateProjekt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncreateProjektActionPerformed(evt);
+            }
+        });
+        panbtns.add(btncreateProjekt);
+
+        getContentPane().add(panbtns, java.awt.BorderLayout.SOUTH);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         JTable t = (JTable) evt.getComponent();
         int row = t.getSelectedRow();
-        
+       TaskboardGUI  tgui=new TaskboardGUI(ll.get(row));
+        tgui.setVisible(true);
     }//GEN-LAST:event_jTable1MouseClicked
+
+    private void btncreateProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncreateProjektActionPerformed
+       this.newprojectdialog.setVisible(true);
+       
+       if(newprojectdialog.isOk){
+           Projekt p=newprojectdialog.p;
+           this.dba.insertProjekt(p, gründerid);
+       }
+    }//GEN-LAST:event_btncreateProjektActionPerformed
 
     /**
      * @param args the command line arguments
@@ -144,11 +175,10 @@ public class ProjectGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btncreateProjekt;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JPanel panbtns;
     // End of variables declaration//GEN-END:variables
 
-    void setDBAccess(DBAccess access) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }

@@ -16,7 +16,7 @@ import javax.swing.table.AbstractTableModel;
  */
 public class ProjectTableModel extends AbstractTableModel {
 
-     private String[] colName = new String[]{"Number","Titel", "Beginn", "Ende"};
+     private String[] colName = new String[]{"Number","Name", "Beginn", "Ende"};
 private LinkedList<Projekt> ll;
     public ProjectTableModel(LinkedList<Projekt> prlist) {
        ll=prlist;
