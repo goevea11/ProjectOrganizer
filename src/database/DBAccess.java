@@ -278,4 +278,11 @@ public class DBAccess {
         }
         return l;
     }
+
+    
+
+    public boolean updateArbeitsschritt(int projektid, String sf, int i) {
+       // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return false;
+    }
 }
