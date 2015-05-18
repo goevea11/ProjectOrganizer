@@ -47,9 +47,10 @@ public class TaskboardGUI extends javax.swing.JFrame {
             todolist = dba.getToDoList(p.getProjektid());
             inworklist = dba.getInWorkList(p.getProjektid());
             finishedlist = dba.getFinishedList(p.getProjektid());
-            this.todomodel.addElement(todolist);
-            this.inworkmodel.addElement(inworklist);
-            this.finishedmodel.addElement(finishedlist);
+            write(todolist,todomodel);
+            write(inworklist,inworkmodel);
+            write(finishedlist,finishedmodel);
+
         } catch (IOException ex) {
             Logger.getLogger(TaskboardGUI.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
@@ -259,4 +260,12 @@ public class TaskboardGUI extends javax.swing.JFrame {
     private javax.swing.JButton todo_inwork_left;
     private javax.swing.JButton todo_inwork_right;
     // End of variables declaration//GEN-END:variables
+
+    
+    private void write(LinkedList<Arbeitsschritt> list, DefaultListModel m) {
+        for(Arbeitsschritt a: list)
+        {
+            m.addElement(a.getArbeitsschrittid()+", "+a.getBezeichnung());
+        }
+    }
 }
