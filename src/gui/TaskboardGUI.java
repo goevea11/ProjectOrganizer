@@ -88,9 +88,10 @@ public class TaskboardGUI extends javax.swing.JFrame {
         jPanel5 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         finishedList = new javax.swing.JList();
+        jTextField1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new java.awt.GridLayout(1, 5));
+        getContentPane().setLayout(new java.awt.GridLayout(2, 5));
 
         jPanel6.setLayout(new java.awt.GridLayout(1, 5));
 
@@ -186,24 +187,75 @@ public class TaskboardGUI extends javax.swing.JFrame {
         jPanel6.add(jPanel5);
 
         getContentPane().add(jPanel6);
+        getContentPane().add(jTextField1);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void todo_inwork_rightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_todo_inwork_rightActionPerformed
-        
+        int i = this.todoList.getSelectedIndex();
+        String s = (String) this.todomodel.getElementAt(i);
+        String[] sf= s.split(",");
+        sf[0]=sf[0].trim();
+        boolean b = dba.updateArbeitsschritt(p.getProjektid(),sf[0],1);
+        if(b)
+        {
+            this.jTextField1.setText("successful!");
+        }
+        this.todolist=dba.getToDoList(this.p.getProjektid());
+        this.inworklist=dba.getInWorkList(this.p.getProjektid());
+        inworkmodel=this.write(inworklist, inworkmodel);
+        todomodel=this.write(todolist, todomodel);
     }//GEN-LAST:event_todo_inwork_rightActionPerformed
 
     private void todo_inwork_leftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_todo_inwork_leftActionPerformed
-        // TODO add your handling code here:
+        int i = this.inworkList.getSelectedIndex();
+        String s = (String) this.inworkmodel.getElementAt(i);
+        String[] sf= s.split(",");
+        sf[0]=sf[0].trim();
+        boolean b = dba.updateArbeitsschritt(p.getProjektid(),sf[0],0);
+        if(b)
+        {
+            this.jTextField1.setText("successful!");
+        }
+        this.todolist=dba.getToDoList(this.p.getProjektid());
+        this.inworklist=dba.getInWorkList(this.p.getProjektid());
+        inworkmodel=this.write(inworklist, inworkmodel);
+        todomodel=this.write(todolist, todomodel);
     }//GEN-LAST:event_todo_inwork_leftActionPerformed
 
     private void inwork_finished_rightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inwork_finished_rightActionPerformed
-        // TODO add your handling code here:
+        int i = this.inworkList.getSelectedIndex();
+        String s = (String) this.inworkmodel.getElementAt(i);
+        String[] sf= s.split(",");
+        sf[0]=sf[0].trim();
+        boolean b = dba.updateArbeitsschritt(p.getProjektid(),sf[0],2);
+        if(b)
+        {
+            this.jTextField1.setText("successful!");
+        }
+        this.finishedlist=dba.getFinishedList(p.getProjektid());
+        this.inworklist=dba.getInWorkList(this.p.getProjektid());
+        inworkmodel=this.write(inworklist, inworkmodel);
+        finishedmodel=this.write(finishedlist, finishedmodel);
+        
     }//GEN-LAST:event_inwork_finished_rightActionPerformed
 
     private void inwork_finished_leftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inwork_finished_leftActionPerformed
-        // TODO add your handling code here:
+        int i = this.inworkList.getSelectedIndex();
+        String s = (String) this.inworkmodel.getElementAt(i);
+        String[] sf= s.split(",");
+        sf[0]=sf[0].trim();
+        boolean b = dba.updateArbeitsschritt(p.getProjektid(),sf[0],1);
+        if(b)
+        {
+            this.jTextField1.setText("successful!");
+        }
+        this.finishedlist=dba.getFinishedList(p.getProjektid());
+        this.inworklist=dba.getInWorkList(this.p.getProjektid());
+        inworkmodel=this.write(inworklist, inworkmodel);
+        finishedmodel=this.write(finishedlist, finishedmodel);
+        
     }//GEN-LAST:event_inwork_finished_leftActionPerformed
 
     /**
@@ -256,6 +308,7 @@ public class TaskboardGUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JList todoList;
     private javax.swing.JButton todo_inwork_left;
     private javax.swing.JButton todo_inwork_right;
