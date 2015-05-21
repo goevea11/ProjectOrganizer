@@ -5,6 +5,8 @@
  */
 package gui;
 
+import bl.Mitarbeiter;
+import bl.MitarbeiterTableModel;
 import bl.ProjectTableModel;
 import bl.Projekt;
 import database.DBAccess;
@@ -31,12 +33,15 @@ public class ProjectGUI extends javax.swing.JFrame {
    private DBAccess dba;
    private ProjectTableModel prtablemodel;
     private NeuesProjekt newprojectdialog;
+    private MitarbeiterTableModel mittablemodel;
     private int gründerid;
+    int letzterklick=-1;
    
     
     public ProjectGUI(int mid) {
         try {
             initComponents();
+            
             TaskboardGUI tgui;
             //tgui = new TaskboardGUI(new Projekt(123,"testproject",new Date(), new Date(2016, 01, 14)));
             gründerid=mid;
@@ -44,8 +49,10 @@ public class ProjectGUI extends javax.swing.JFrame {
             newprojectdialog=new NeuesProjekt(this,true);
             
             ll = dba.getProjekte(mid);
+            mittablemodel=new MitarbeiterTableModel(new LinkedList<Mitarbeiter>());
             prtablemodel=new ProjectTableModel(ll);
-            jTable1.setModel(prtablemodel);
+            tabprojekte.setModel(prtablemodel);
+            this.tabmitarbeiter.setModel(mittablemodel);
             try {
                 dba = new DBAccess("proorg");
             } catch (IOException ex) {
@@ -79,16 +86,26 @@ public class ProjectGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jSplitPane1 = new javax.swing.JSplitPane();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabprojekte = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tabmitarbeiter = new javax.swing.JTable();
         panbtns = new javax.swing.JPanel();
         btncreateProjekt = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(464, 400));
+
+        jSplitPane1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jSplitPane1.setDividerLocation(-80);
+        jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        jSplitPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder("Projekte"));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(231, 211));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabprojekte.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -99,14 +116,38 @@ public class ProjectGUI extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+        tabprojekte.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable1MouseClicked(evt);
+                tabprojekteMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                tabprojekteMouseEntered(evt);
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tabprojekte);
 
-        getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        jSplitPane1.setLeftComponent(jScrollPane1);
+
+        jScrollPane2.setBorder(javax.swing.BorderFactory.createTitledBorder("Beteiligte Mitarbeiter"));
+        jScrollPane2.setPreferredSize(new java.awt.Dimension(231, 211));
+
+        tabmitarbeiter.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tabmitarbeiter.setMaximumSize(new java.awt.Dimension(300, 64));
+        jScrollPane2.setViewportView(tabmitarbeiter);
+
+        jSplitPane1.setRightComponent(jScrollPane2);
+
+        getContentPane().add(jSplitPane1, java.awt.BorderLayout.CENTER);
 
         panbtns.setLayout(new java.awt.GridLayout(1, 2));
 
@@ -123,13 +164,30 @@ public class ProjectGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+    
+    
+    private void tabprojekteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabprojekteMouseClicked
         JTable t = (JTable) evt.getComponent();
         int row = t.getSelectedRow();
-       TaskboardGUI  tgui=new TaskboardGUI(ll.get(row));
-        tgui.setVisible(true);
-    }//GEN-LAST:event_jTable1MouseClicked
+        int prid=(int) this.prtablemodel.getValueAt(row, 0);
+        if(this.letzterklick==row){
+         TaskboardGUI  tgui=new TaskboardGUI(ll.get(prid));
+        tgui.setVisible(true);   
+        }else{
+            
+            try {
+                this.mittablemodel.setlist(dba.getMitarbeiterfromProjekt(prid));
+                this.tabmitarbeiter.setModel(mittablemodel);
+                letzterklick=row;
+            } catch (SQLException ex) {
+                Logger.getLogger(ProjectGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+       
+    }//GEN-LAST:event_tabprojekteMouseClicked
 
+    
+    
     private void btncreateProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncreateProjektActionPerformed
        this.newprojectdialog.setVisible(true);
        
@@ -138,6 +196,11 @@ public class ProjectGUI extends javax.swing.JFrame {
            this.dba.insertProjekt(p, gründerid);
        }
     }//GEN-LAST:event_btncreateProjektActionPerformed
+
+    private void tabprojekteMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabprojekteMouseEntered
+   
+      
+    }//GEN-LAST:event_tabprojekteMouseEntered
 
     /**
      * @param args the command line arguments
@@ -177,8 +240,11 @@ public class ProjectGUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btncreateProjekt;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JPanel panbtns;
+    private javax.swing.JTable tabmitarbeiter;
+    private javax.swing.JTable tabprojekte;
     // End of variables declaration//GEN-END:variables
 
 }

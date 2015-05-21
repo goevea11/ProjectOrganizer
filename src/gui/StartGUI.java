@@ -45,7 +45,7 @@ public class StartGUI extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         tfname = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        tfpassword = new javax.swing.JTextField();
+        tfpasswort = new javax.swing.JPasswordField();
         btnlogin = new javax.swing.JButton();
         btncreateaccount = new javax.swing.JButton();
 
@@ -63,7 +63,9 @@ public class StartGUI extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("Passwort");
         jPanel1.add(jLabel2);
-        jPanel1.add(tfpassword);
+
+        tfpasswort.setText("jPasswordField1");
+        jPanel1.add(tfpasswort);
 
         btnlogin.setText("Einloggen");
         btnlogin.addActionListener(new java.awt.event.ActionListener() {
@@ -88,10 +90,10 @@ public class StartGUI extends javax.swing.JFrame {
 
     private void btnloginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnloginActionPerformed
 
-        if(access.checkMitarbeiter(this.tfname.getText(),this.tfpassword.getText()).equals(this.tfname.getText())){
+        if(access.checkMitarbeiter(this.tfname.getText(),this.tfpasswort.getText()).equals(this.tfname.getText())){
             JOptionPane.showMessageDialog(this, "\"login erfolgreich\"");
             
-            int mid= access.getMitarbeiter(tfname.getText(), this.tfpassword.getText());
+            int mid= access.getMitarbeiter(this.tfpasswort.getText(),tfname.getText());
             ProjectGUI projectgui=new ProjectGUI(mid);
             projectgui.setVisible(true);
             this.dispose();
@@ -99,7 +101,7 @@ public class StartGUI extends javax.swing.JFrame {
         else
         {
             JOptionPane.showMessageDialog(this, "Bitte erneut versuchen!");
-            tfpassword.setText("");
+            tfpasswort.setText("");
         }
     }//GEN-LAST:event_btnloginActionPerformed
 
@@ -162,6 +164,6 @@ public class StartGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField tfname;
-    private javax.swing.JTextField tfpassword;
+    private javax.swing.JPasswordField tfpasswort;
     // End of variables declaration//GEN-END:variables
 }

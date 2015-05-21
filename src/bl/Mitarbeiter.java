@@ -18,6 +18,16 @@ public class Mitarbeiter {
     Date gebdatum;
     String passwort;
 
+    
+    
+     public Mitarbeiter(int id, String vorname, String nachname, Date gebdatum, String passwort) {
+        this.id=id;
+        this.vorname = vorname;
+        this.nachname = nachname;
+        this.gebdatum = gebdatum;
+        this.passwort = passwort;
+    }
+    
     public Mitarbeiter(String vorname, String nachname, Date gebdatum, String passwort) {
       
         this.vorname = vorname;

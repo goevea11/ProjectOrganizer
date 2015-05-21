@@ -113,6 +113,35 @@ public class DBAccess {
         return returnname;
     }
 
+    
+    public LinkedList<Mitarbeiter> getMitarbeiterfromProjekt(int projektid) throws SQLException{
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+        LinkedList<Mitarbeiter> mitarbeiterlist=new LinkedList<Mitarbeiter>();
+            Statement stat = db.getCon().createStatement();
+       String sqlString="SELECT m.mitarbeiterid, m.firstname,m.name,  m.birthdate, m.password"
+               + " FROM mitarbeiter m INNER JOIN Verwaltung v ON(m.mitarbeiterid=v.mitarbeiterid)"
+               + " WHERE v.projektid="+projektid+";";
+       
+       
+        ResultSet rs = stat.executeQuery(sqlString);
+            while (rs.next()) {
+                      java.sql.Date sqlbirthdate=rs.getDate(4);
+                Date birthdate=new Date(sqlbirthdate.getTime());
+                
+                
+                //int id, String vorname, String nachname, Date gebdatum, String passwort
+                mitarbeiterlist.add(new Mitarbeiter(rs.getInt(1), rs.getString(2), rs.getString(3), birthdate, rs.getString(5)));
+            }
+       
+       
+
+       
+       return mitarbeiterlist;
+       
+    }
+    
+   
+    
     public void insertProjekt(Projekt p, int gründerid) {
 
         try {

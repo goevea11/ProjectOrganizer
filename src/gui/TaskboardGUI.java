@@ -51,6 +51,7 @@ public class TaskboardGUI extends javax.swing.JFrame {
             inworkmodel=write(inworklist,inworkmodel);
             finishedmodel=write(finishedlist,finishedmodel);
 
+            
         } catch (IOException ex) {
             Logger.getLogger(TaskboardGUI.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
