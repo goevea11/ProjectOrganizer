@@ -311,7 +311,17 @@ public class DBAccess {
     
 
     public boolean updateArbeitsschritt(int projektid, String sf, int i) {
-       // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        return false;
+        try {
+            Statement stat = db.getCon().createStatement();
+            String sqlString = "UPDATE arbeitsschritt"
+                    + "SET progress="+i+""
+                    + "WHERE projektid='"+projektid+"' AND arbeitsschrittid='"+sf+"';";
+            stat.executeUpdate(sqlString);
+        } catch (SQLException ex) {
+            
+            Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        return true;
     }
 }
