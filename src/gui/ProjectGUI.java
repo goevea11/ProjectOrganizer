@@ -171,13 +171,14 @@ public class ProjectGUI extends javax.swing.JFrame {
         int row = t.getSelectedRow();
         int prid=(int) this.prtablemodel.getValueAt(row, 0);
         if(this.letzterklick==row){
-         TaskboardGUI  tgui=new TaskboardGUI(ll.get(prid));
+         TaskboardGUI  tgui=new TaskboardGUI(ll.get(row));
         tgui.setVisible(true);   
         }else{
             
             try {
                 this.mittablemodel.setlist(dba.getMitarbeiterfromProjekt(prid));
                 this.tabmitarbeiter.setModel(mittablemodel);
+                
                 letzterklick=row;
             } catch (SQLException ex) {
                 Logger.getLogger(ProjectGUI.class.getName()).log(Level.SEVERE, null, ex);

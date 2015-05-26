@@ -54,6 +54,7 @@ private LinkedList<Mitarbeiter> ll;
 
     public void setlist(LinkedList<Mitarbeiter> mitarbeiterfromProjekt) {
        this.ll=mitarbeiterfromProjekt;
+       this.fireTableDataChanged();
     }
     
 }
