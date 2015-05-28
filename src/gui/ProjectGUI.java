@@ -39,36 +39,17 @@ public class ProjectGUI extends javax.swing.JFrame {
    
     
     public ProjectGUI(int mid) {
-        try {
-            initComponents();
-            
-            TaskboardGUI tgui;
-            //tgui = new TaskboardGUI(new Projekt(123,"testproject",new Date(), new Date(2016, 01, 14)));
-            gründerid=mid;
-            dba=new DBAccess("proorg");
-            newprojectdialog=new NeuesProjekt(this,true);
-            
-            ll = dba.getProjekte(mid);
-            mittablemodel=new MitarbeiterTableModel(new LinkedList<Mitarbeiter>());
-            prtablemodel=new ProjectTableModel(ll);
-            tabprojekte.setModel(prtablemodel);
-            this.tabmitarbeiter.setModel(mittablemodel);
-            try {
-                dba = new DBAccess("proorg");
-            } catch (IOException ex) {
-                Logger.getLogger(ProjectGUI.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(ProjectGUI.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SQLException ex) {
-                Logger.getLogger(ProjectGUI.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(ProjectGUI.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ProjectGUI.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(ProjectGUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        initComponents();
+        TaskboardGUI tgui;
+        gründerid=mid;
+        dba=new DBAccess("proorg");
+        newprojectdialog=new NeuesProjekt(this,true);
+        ll = dba.getProjekte(mid);
+        mittablemodel=new MitarbeiterTableModel(new LinkedList<Mitarbeiter>());
+        prtablemodel=new ProjectTableModel(ll);
+        tabprojekte.setModel(prtablemodel);
+        this.tabmitarbeiter.setModel(mittablemodel);
+        dba = new DBAccess("proorg");
       
        
     }
@@ -172,7 +153,8 @@ public class ProjectGUI extends javax.swing.JFrame {
         int prid=(int) this.prtablemodel.getValueAt(row, 0);
         if(this.letzterklick==row){
          TaskboardGUI  tgui=new TaskboardGUI(ll.get(row));
-        tgui.setVisible(true);   
+        tgui.setVisible(true); 
+       
         }else{
             
             try {

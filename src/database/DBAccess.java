@@ -24,32 +24,28 @@ public class DBAccess {
     private Database db;
 
     public static void main(String[] args) {
-        try {
-            DBAccess dba = new DBAccess("proorg");
-
-            LinkedList<Arbeitsschritt> a = dba.getToDoList(1);
-
-            for (Arbeitsschritt p : a) {
-                System.out.println(p.getText());
-            }
-
-        } catch (IOException ex) {
-            Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
+        DBAccess dba = new DBAccess("proorg");
+        LinkedList<Arbeitsschritt> a = dba.getToDoList(1);
+        for (Arbeitsschritt p : a) {
+            System.out.println(p.getText());
         }
     }
 
     /**
      * Creates a new instance of DBAccess
      */
-    public DBAccess(String dbname)
-            throws IOException, FileNotFoundException,
-            ClassNotFoundException, SQLException {
-        db = Database.getInstance();
-        db.connect(dbname);
+    public DBAccess(String dbname){
+        
+        try {
+            db = Database.getInstance();
+            db.connect(dbname);
+        } catch (SQLException ex) {
+            Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void insertMitarbeiter(Mitarbeiter m) {
@@ -118,7 +114,7 @@ public class DBAccess {
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         LinkedList<Mitarbeiter> mitarbeiterlist=new LinkedList<Mitarbeiter>();
             Statement stat = db.getCon().createStatement();
-       String sqlString="SELECT m.mitarbeiterid, m.firstname,m.name,  m.birthdate, m.password"
+       String sqlString="SELECT m.mitarbeiterid, m.name,m.firstname,  m.birthdate, m.password"
                + " FROM mitarbeiter m INNER JOIN Verwaltung v ON(m.mitarbeiterid=v.mitarbeiterid)"
                + " WHERE v.projektid="+projektid+";";
        
@@ -176,6 +172,30 @@ public class DBAccess {
         } catch (SQLException ex) {
             Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    
+    public void insertArbeitsschritt(Projekt p, Mitarbeiter m, Arbeitsschritt a){
+       
+        try {
+            //Arbeitsschritt zur Erstellung des Projektes einfügen
+        Statement stat = db.getCon().createStatement();
+            
+            String sqlString="INSERT INTO arbeitsschritt "
+                     + "VALUES ((SELECT MAX(arbeitsschrittid) FROM arbeitsschritt)+1,"+p.getProjektid()+", '"+a.getBezeichnung()+"', '"+a.getText()+"',0);";
+          stat.executeUpdate(sqlString);
+           int arbeitsschrittid=this.getArbeitsschrittId(a.getBezeichnung(),p.getProjektid());
+           
+           //3. Datensatz in Verwaltung einfügen
+           
+           sqlString="INSERT INTO verwaltung VALUES("+m.getId()+","+arbeitsschrittid+","+p.getProjektid()+");";
+           stat.executeUpdate(sqlString);
+            stat.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
     }
     
     
@@ -324,4 +344,43 @@ public class DBAccess {
         }
         return true;
     }
+    
+    
+    
+    
+    
+    public LinkedList<Mitarbeiter> getAllMitarbeiter(){
+         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+        LinkedList<Mitarbeiter> mitarbeiterlist=new LinkedList<Mitarbeiter>();
+            Statement stat;
+        try {
+            stat = db.getCon().createStatement();
+            String sqlString="SELECT m.mitarbeiterid, m.name,m.firstname,  m.birthdate, m.password"
+               + " FROM mitarbeiter m;";
+            ResultSet rs = stat.executeQuery(sqlString);
+            while (rs.next()) {
+                      java.sql.Date sqlbirthdate=rs.getDate(4);
+                Date birthdate=new Date(sqlbirthdate.getTime());
+                
+                
+                //int id, String vorname, String nachname, Date gebdatum, String passwort
+                mitarbeiterlist.add(new Mitarbeiter(rs.getInt(1), rs.getString(2), rs.getString(3), birthdate, rs.getString(5)));
+            }
+       
+       
+        } catch (SQLException ex) {
+            Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+             
+       
+       
+        
+
+       
+       return mitarbeiterlist;
+       
+    }
+    
+    
 }

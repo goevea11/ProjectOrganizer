@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import bl.Arbeitsschritt;
+import bl.Mitarbeiter;
 /**
  *
  * @author Veronika
@@ -33,32 +34,25 @@ public class TaskboardGUI extends javax.swing.JFrame {
     private LinkedList<Arbeitsschritt> inworklist;
     private LinkedList<Arbeitsschritt> finishedlist;
     private Projekt p;
+    private NewArbeitsschritt newarbeitsschrittdialog;
     public TaskboardGUI(Projekt projekt) {
-        try {
-            initComponents();
-             p= projekt;
-            todomodel = new DefaultListModel();
-            this.todoList.setModel(todomodel);
-            inworkmodel = new DefaultListModel();
-            this.inworkList.setModel(inworkmodel);
-            finishedmodel = new DefaultListModel();
-            this.finishedList.setModel(finishedmodel);
-            dba= new DBAccess("proorg");
-            todolist = dba.getToDoList(p.getProjektid());
-            inworklist = dba.getInWorkList(p.getProjektid());
-            finishedlist = dba.getFinishedList(p.getProjektid());
-            todomodel=write(todolist,todomodel);
-            inworkmodel=write(inworklist,inworkmodel);
-            finishedmodel=write(finishedlist,finishedmodel);
-
-            
-        } catch (IOException ex) {
-            Logger.getLogger(TaskboardGUI.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(TaskboardGUI.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(TaskboardGUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        initComponents();
+        p= projekt;
+        todomodel = new DefaultListModel();
+        this.todoList.setModel(todomodel);
+        inworkmodel = new DefaultListModel();
+        this.inworkList.setModel(inworkmodel);
+        finishedmodel = new DefaultListModel();
+        this.finishedList.setModel(finishedmodel);
+        dba= new DBAccess("proorg");
+        todolist = dba.getToDoList(p.getProjektid());
+        inworklist = dba.getInWorkList(p.getProjektid());
+        finishedlist = dba.getFinishedList(p.getProjektid());
+        todomodel=write(todolist,todomodel);
+        inworkmodel=write(inworklist,inworkmodel);
+        finishedmodel=write(finishedlist,finishedmodel);
+        newarbeitsschrittdialog=new NewArbeitsschritt(this, true, dba);
+        newarbeitsschrittdialog.setProjekt(p);
         
     }
 
@@ -90,9 +84,10 @@ public class TaskboardGUI extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         finishedList = new javax.swing.JList();
         jTextField1 = new javax.swing.JTextField();
+        btnaddArbeitsschritt = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new java.awt.GridLayout(2, 5));
+        getContentPane().setLayout(new java.awt.GridLayout(3, 5));
 
         jPanel6.setLayout(new java.awt.GridLayout(1, 5));
 
@@ -190,6 +185,14 @@ public class TaskboardGUI extends javax.swing.JFrame {
         getContentPane().add(jPanel6);
         getContentPane().add(jTextField1);
 
+        btnaddArbeitsschritt.setText("Arbeitsschritt hinzufügen");
+        btnaddArbeitsschritt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnaddArbeitsschrittActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnaddArbeitsschritt);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -259,6 +262,16 @@ public class TaskboardGUI extends javax.swing.JFrame {
         
     }//GEN-LAST:event_inwork_finished_leftActionPerformed
 
+    private void btnaddArbeitsschrittActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaddArbeitsschrittActionPerformed
+    this.newarbeitsschrittdialog.setVisible(true);
+       
+       if(newarbeitsschrittdialog.isOk){
+           Arbeitsschritt a=newarbeitsschrittdialog.a;
+           Mitarbeiter m=newarbeitsschrittdialog.getMitarbeiter();
+           this.dba.insertArbeitsschritt(p, m, a);
+       }
+    }//GEN-LAST:event_btnaddArbeitsschrittActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -296,6 +309,7 @@ public class TaskboardGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnaddArbeitsschritt;
     private javax.swing.JList finishedList;
     private javax.swing.JList inworkList;
     private javax.swing.JButton inwork_finished_left;

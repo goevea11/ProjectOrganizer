@@ -69,8 +69,6 @@ public class NewMitarbeiter extends javax.swing.JDialog {
 
         jLabel4.setText("Passwort:");
         getContentPane().add(jLabel4);
-
-        tfpasswort.setText("jPasswordField1");
         getContentPane().add(tfpasswort);
 
         btncreateAccount.setText("Account erstellen");
