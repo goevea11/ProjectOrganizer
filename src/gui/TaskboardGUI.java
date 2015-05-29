@@ -372,6 +372,8 @@ public class TaskboardGUI extends javax.swing.JFrame {
     }
 
     private void mouseclick(JList list, DefaultListModel model) {
+        // Wird ein Arbeitsschritt angeklickt soll im Textfeld eine Beschreibung
+        // 
         int i = list.getSelectedIndex();
         String s = (String) model.getElementAt(i);
         String[] sf = s.split(",");
