@@ -88,6 +88,9 @@ public class StartGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnloginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnloginActionPerformed
+        //Diese Methode prüft, ob der Mitarbeiter in der Datenbank vorhanden ist 
+        //und ob das eingegebene Passwort mit dem in der Datenbank übereinstimmt
+        
         this.tfpasswort.selectAll();
         if(access.checkMitarbeiter(this.tfname.getText().toLowerCase(),this.tfpasswort.getSelectedText()).equals(this.tfname.getText().toLowerCase())){
            
@@ -103,7 +106,7 @@ public class StartGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnloginActionPerformed
 
     private void btncreateaccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncreateaccountActionPerformed
-        //Dialog aufrufen, der den neuen Mitarbeiter erstellt
+        //Wenn noch kein Mitarbeiter besteht, kann hier ein neuer Mitarbeiter erstellt werden
         this.newmitarbeiterdialog.setVisible(true);
         if (newmitarbeiterdialog.isOk) {
             Mitarbeiter m = newmitarbeiterdialog.m;

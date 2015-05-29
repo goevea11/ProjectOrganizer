@@ -69,6 +69,7 @@ public class DBAccess {
     }
 
     public int getMitarbeiter(String passwort, String nachname) {
+        //Holt einen Mitarbeiter mittels namen und passwort aus der Datenbank
         int ma = 0;
         try {
             Statement stat = db.getCon().createStatement();
@@ -87,6 +88,7 @@ public class DBAccess {
     }
 
     public String checkMitarbeiter(String nachname, String passwort) {
+        //Überprüft, ob das Passwort zum Mitarbeiter richtig ist
         String returnname = "";
 
         try {
@@ -110,6 +112,7 @@ public class DBAccess {
     }
 
     public LinkedList<Mitarbeiter> getMitarbeiterfromProjekt(int projektid) throws SQLException {
+        //Gibt alle Mitarbeiter zurück, die an einem Projekt beteiligt sind.
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         LinkedList<Mitarbeiter> mitarbeiterlist = new LinkedList<Mitarbeiter>();
         Statement stat = db.getCon().createStatement();
@@ -131,7 +134,9 @@ public class DBAccess {
     }
 
     public void insertProjekt(Projekt p, int gründerid) {
-
+        //Fügt ein neues Projekt mit der Gründerid in die Datenbank ein
+        //Auch der zugehörige Arbeitsschritt wird in die Verwaltung eingefügt,
+        //damit der Gründer als dem Projekt zugehörig angesehen wird
         try {
 
             SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
@@ -164,9 +169,11 @@ public class DBAccess {
     }
 
     public void insertArbeitsschritt(Projekt p, Mitarbeiter m, Arbeitsschritt a) {
-
+        //Fügt einen neuen Arbeitsschritt zu einem bestimmten Projekt ein,
+        //welcher durch einen bestimmten Mitarbeiter betreut wird.
+        //Der zugehörige Datensatz, der Projekt, Mitarbeiter und Arbeitsschritt verbindet,
+        //wird in die Verwaltung eingefügt.
         try {
-            //Arbeitsschritt zur Erstellung des Projektes einfügen
             Statement stat = db.getCon().createStatement();
 
             String sqlString = "INSERT INTO arbeitsschritt "
@@ -174,7 +181,6 @@ public class DBAccess {
             stat.executeUpdate(sqlString);
             int arbeitsschrittid = this.getArbeitsschrittId(a.getBezeichnung(), p.getProjektid());
 
-            //3. Datensatz in Verwaltung einfügen
             sqlString = "INSERT INTO verwaltung VALUES(" + m.getId() + "," + arbeitsschrittid + "," + p.getProjektid() + ");";
             stat.executeUpdate(sqlString);
             stat.close();
@@ -185,6 +191,7 @@ public class DBAccess {
     }
 
     public int getArbeitsschrittId(String bezeichnung, int projektid) {
+        //Gibt für einen Arbeitsschritt eines Projekts die ID zurück
         String sqlString = " SELECT arbeitsschrittid "
                 + "FROM \"arbeitsschritt\""
                 + "WHERE bezeichnung='" + bezeichnung + "' AND projektid=" + projektid + ";";
@@ -203,6 +210,7 @@ public class DBAccess {
     }
 
     public int getProjektId(String name) {
+        //Gibt die ProjektID für einen Projektnamen zurück
         String sqlString = " SELECT projektid "
                 + "FROM \"projekt\""
                 + "WHERE name='" + name + "';";
@@ -220,6 +228,8 @@ public class DBAccess {
     }
 
     public LinkedList<Projekt> getProjekte(int id) {
+        //Holt alle Projekte heraus, bei denen ein bestimmter Mitarbeiter beteiligt ist 
+        //(=Es gibt einen Arbeitsschritt in diesem Projekt, für den der Mitarbeiter zuständig ist)
 
         LinkedList<Projekt> projekte = new LinkedList<Projekt>();
         //Zuerst Mitarbeitet, MitarbeiterProject und Project joinen
@@ -323,6 +333,7 @@ public class DBAccess {
     }
 
     public LinkedList<Mitarbeiter> getAllMitarbeiter() {
+        //Holt alle vorhandenen Mitarbeiter aus der Datenbank
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         LinkedList<Mitarbeiter> mitarbeiterlist = new LinkedList<Mitarbeiter>();
         Statement stat;
@@ -347,6 +358,7 @@ public class DBAccess {
     }
 
     public String getMitarbeiterFromArbeitsschritt(int projektid, int arbeitsid) {
+        //Holt den zuständigen Mitarbeiter für den Arbeitsschritt eines Projekts heraus
         String name = "";
         try {
             Statement stat = db.getCon().createStatement();
@@ -368,6 +380,7 @@ public class DBAccess {
     }
 
     public String getBezeichnung(int projektid, int arbeitsid) {
+        //Gibt anhand der ArbeitsschrittID und der ProjektID die Bezeichnung eines Arbeitsschrittes zurück
        String bez = "";
         try {
             Statement stat = db.getCon().createStatement();

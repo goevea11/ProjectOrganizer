@@ -26,9 +26,8 @@ import javax.swing.table.AbstractTableModel;
  */
 public class ProjectGUI extends javax.swing.JFrame {
 
-    /**
-     * Creates new form ProjectGUI
-     */
+    
+    
     private LinkedList<Projekt> ll;
     private DBAccess dba;
     private ProjectTableModel prtablemodel;
