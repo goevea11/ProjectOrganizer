@@ -62,14 +62,10 @@ public class NeuesProjekt extends javax.swing.JDialog {
 
         jLabel2.setText("Beginndatum:");
         getContentPane().add(jLabel2);
-
-        tfbeginndatum.setText("jTextField1");
         getContentPane().add(tfbeginndatum);
 
         jLabel3.setText("Enddatum:");
         getContentPane().add(jLabel3);
-
-        tfenddatum.setText("jTextField1");
         getContentPane().add(tfenddatum);
 
         btnok.setText("OK");

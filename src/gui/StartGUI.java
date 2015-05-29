@@ -63,8 +63,6 @@ public class StartGUI extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("Passwort");
         jPanel1.add(jLabel2);
-
-        tfpasswort.setText("jPasswordField1");
         jPanel1.add(tfpasswort);
 
         btnlogin.setText("Einloggen");
