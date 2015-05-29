@@ -348,7 +348,41 @@ public class DBAccess {
 
     public String getMitarbeiterFromArbeitsschritt(int projektid, int arbeitsid) {
         String name = "";
+        try {
+            Statement stat = db.getCon().createStatement();
+            String sqlString = "SELECT m.firstname, m.name "
+                    + "FROM verwaltung v INNER JOIN Mitarbeiter m ON(m.mitarbeiterid=v.mitarbeiterid)"
+                    + " WHERE v.projektid ='" + projektid + "' AND v.arbeitsschrittid="+arbeitsid+";";
+
+            ResultSet rs = stat.executeQuery(sqlString);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+            while (rs.next()) {
+                name=rs.getString(1);
+                name+=" "+rs.getString(2);
+            }
+            stat.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return name;
+    }
+
+    public String getBezeichnung(int projektid, int arbeitsid) {
+       String bez = "";
+        try {
+            Statement stat = db.getCon().createStatement();
+            String sqlString = "SELECt text FROM arbeitsschritt WHERE arbeitsschrittid="+arbeitsid+" AND "
+                    + "projektid="+projektid+";";
+            ResultSet rs = stat.executeQuery(sqlString);
+            
+            while (rs.next()) {
+                bez=rs.getString(1);
+            }
+            stat.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return bez;
     }
 
 }

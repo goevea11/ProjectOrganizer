@@ -378,5 +378,7 @@ public class TaskboardGUI extends javax.swing.JFrame {
         sf[0] = sf[0].trim();
         int arbeitsid = Integer.parseInt(sf[0]);
         String name = dba.getMitarbeiterFromArbeitsschritt(this.p.getProjektid(), arbeitsid);
+        String text = dba.getBezeichnung(p.getProjektid(),arbeitsid);
+        this.jTextField1.setText("Beschreibung: "+text+"    Zuständiger Mitarbeiter: "+name);
     }
 }
