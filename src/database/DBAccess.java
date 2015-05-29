@@ -72,7 +72,7 @@ public class DBAccess {
         int ma = 0;
         try {
             Statement stat = db.getCon().createStatement();
-            String sqlString = "SELECT mitarbeiterid FROM \"mitarbeiter\" WHERE password='" + passwort + "' AND firstname='" + nachname + "';";
+            String sqlString = "SELECT mitarbeiterid FROM \"mitarbeiter\" WHERE password='" + passwort + "' AND LOWER(firstname)='" + nachname + "';";
 
             ResultSet rs = stat.executeQuery(sqlString);
 
@@ -91,7 +91,7 @@ public class DBAccess {
 
         try {
             Statement stat = db.getCon().createStatement();
-            String sqlString = "SElECT firstname FROM \"mitarbeiter\" WHERE password='" + passwort + "' AND firstname='" + nachname + "';";
+            String sqlString = "SElECT LOWER(firstname) FROM \"mitarbeiter\" WHERE password='" + passwort + "' AND LOWER(firstname)='" + nachname + "';";
             ResultSet rs = stat.executeQuery(sqlString);
 
             if (rs.next()) {
