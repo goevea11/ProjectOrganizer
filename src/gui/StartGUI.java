@@ -88,11 +88,11 @@ public class StartGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnloginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnloginActionPerformed
-
-        if(access.checkMitarbeiter(this.tfname.getText().toLowerCase(),this.tfpasswort.getText()).equals(this.tfname.getText().toLowerCase())){
-            JOptionPane.showMessageDialog(this, "\"login erfolgreich\"");
+        this.tfpasswort.selectAll();
+        if(access.checkMitarbeiter(this.tfname.getText().toLowerCase(),this.tfpasswort.getSelectedText()).equals(this.tfname.getText().toLowerCase())){
+           
             
-            int mid= access.getMitarbeiter(this.tfpasswort.getText(),tfname.getText().toLowerCase());
+            int mid= access.getMitarbeiter(this.tfpasswort.getSelectedText(),tfname.getText().toLowerCase());
             ProjectGUI projectgui=new ProjectGUI(mid);
             projectgui.setVisible(true);
             this.dispose();
