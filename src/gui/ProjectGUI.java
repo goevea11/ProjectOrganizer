@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gui;
 
 import bl.Mitarbeiter;
@@ -38,6 +33,7 @@ public class ProjectGUI extends javax.swing.JFrame {
 
     public ProjectGUI(int mid) {
         initComponents();
+        //Konstruktor, welcher die DB-Verbindung aufbaut, 
         TaskboardGUI tgui;
         gründerid = mid;
         dba = new DBAccess("proorg");
@@ -144,6 +140,8 @@ public class ProjectGUI extends javax.swing.JFrame {
 
 
     private void tabprojekteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabprojekteMouseClicked
+        //Methode, die beim Klick auf die obere Tabelle (Auflistung der Projekte) ausgelöst wird.
+        //
         JTable t = (JTable) evt.getComponent();
         int row = t.getSelectedRow();
         int prid = (int) this.prtablemodel.getValueAt(row, 0);
