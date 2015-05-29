@@ -206,6 +206,8 @@ public class TaskboardGUI extends javax.swing.JFrame {
         {
             this.jTextField1.setText("successful!");
         }
+        inworkmodel.clear();
+        todomodel.clear();
         this.todolist=dba.getToDoList(this.p.getProjektid());
         this.inworklist=dba.getInWorkList(this.p.getProjektid());
         inworkmodel=this.write(inworklist, inworkmodel);
@@ -222,6 +224,8 @@ public class TaskboardGUI extends javax.swing.JFrame {
         {
             this.jTextField1.setText("successful!");
         }
+         inworkmodel.clear();
+        todomodel.clear();
         this.todolist=dba.getToDoList(this.p.getProjektid());
         this.inworklist=dba.getInWorkList(this.p.getProjektid());
         inworkmodel=this.write(inworklist, inworkmodel);
@@ -238,6 +242,8 @@ public class TaskboardGUI extends javax.swing.JFrame {
         {
             this.jTextField1.setText("successful!");
         }
+        inworkmodel.clear();
+        finishedmodel.clear();
         this.finishedlist=dba.getFinishedList(p.getProjektid());
         this.inworklist=dba.getInWorkList(this.p.getProjektid());
         inworkmodel=this.write(inworklist, inworkmodel);
@@ -246,8 +252,8 @@ public class TaskboardGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_inwork_finished_rightActionPerformed
 
     private void inwork_finished_leftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inwork_finished_leftActionPerformed
-        int i = this.inworkList.getSelectedIndex();
-        String s = (String) this.inworkmodel.getElementAt(i);
+        int i = this.finishedList.getSelectedIndex();
+        String s = (String) this.finishedmodel.getElementAt(i);
         String[] sf= s.split(",");
         sf[0]=sf[0].trim();
         boolean b = dba.updateArbeitsschritt(p.getProjektid(),sf[0],1);
@@ -255,6 +261,9 @@ public class TaskboardGUI extends javax.swing.JFrame {
         {
             this.jTextField1.setText("successful!");
         }
+        
+        inworkmodel.clear();
+        finishedlist.clear();
         this.finishedlist=dba.getFinishedList(p.getProjektid());
         this.inworklist=dba.getInWorkList(this.p.getProjektid());
         inworkmodel=this.write(inworklist, inworkmodel);
