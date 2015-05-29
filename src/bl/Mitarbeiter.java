@@ -12,24 +12,23 @@ import java.util.Date;
  * @author Veronika
  */
 public class Mitarbeiter {
+
     int id;
     String vorname;
     String nachname;
     Date gebdatum;
     String passwort;
 
-    
-    
-     public Mitarbeiter(int id, String vorname, String nachname, Date gebdatum, String passwort) {
-        this.id=id;
+    public Mitarbeiter(int id, String vorname, String nachname, Date gebdatum, String passwort) {
+        this.id = id;
         this.vorname = vorname;
         this.nachname = nachname;
         this.gebdatum = gebdatum;
         this.passwort = passwort;
     }
-    
+
     public Mitarbeiter(String vorname, String nachname, Date gebdatum, String passwort) {
-      
+
         this.vorname = vorname;
         this.nachname = nachname;
         this.gebdatum = gebdatum;
@@ -39,8 +38,6 @@ public class Mitarbeiter {
     public int getId() {
         return id;
     }
-
-  
 
     public String getVorname() {
         return vorname;
@@ -75,6 +72,6 @@ public class Mitarbeiter {
     }
 
     public void setid(int i) {
-        this.id=i;
+        this.id = i;
     }
 }

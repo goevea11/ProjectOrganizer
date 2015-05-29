@@ -23,38 +23,35 @@ public class NewArbeitsschritt extends javax.swing.JDialog {
     /**
      * Creates new form NewArbeitsschritt
      */
-    
-    
-     public boolean isOk;
-     public Arbeitsschritt a;
-     private Mitarbeiter m;
-     private DBAccess dbaccess;
-     private LinkedList<Mitarbeiter> alleMitarbeiter;
+    public boolean isOk;
+    public Arbeitsschritt a;
+    private Mitarbeiter m;
+    private DBAccess dbaccess;
+    private LinkedList<Mitarbeiter> alleMitarbeiter;
     private Projekt p;
+
     public NewArbeitsschritt(java.awt.Frame parent, boolean modal, DBAccess dba) {
         super(parent, modal);
         initComponents();
-        isOk=false;
-        dbaccess=dba;
-        this.alleMitarbeiter=dbaccess.getAllMitarbeiter();
+        isOk = false;
+        dbaccess = dba;
+        this.alleMitarbeiter = dbaccess.getAllMitarbeiter();
         //ComboBox befüllen
-        String[] mitarbeiterarray=new String[alleMitarbeiter.size()];
-         for (int i = 0; i < mitarbeiterarray.length; i++) {
-            mitarbeiterarray[i]=alleMitarbeiter.get(i).getId()+", "+alleMitarbeiter.get(i).getNachname();
+        String[] mitarbeiterarray = new String[alleMitarbeiter.size()];
+        for (int i = 0; i < mitarbeiterarray.length; i++) {
+            mitarbeiterarray[i] = alleMitarbeiter.get(i).getId() + ", " + alleMitarbeiter.get(i).getNachname();
             this.cbMitarbeiter.addItem(mitarbeiterarray[i]);
         }
-        
-        
+
     }
 
-    
-   public  Mitarbeiter getMitarbeiter() {
-       //Mitarbeiter zurückgeben, der für den Arbeitsschritt ausgewählt wurde
-       return m;
+    public Mitarbeiter getMitarbeiter() {
+        //Mitarbeiter zurückgeben, der für den Arbeitsschritt ausgewählt wurde
+        return m;
     }
-   
+
     void setProjekt(Projekt p) {
-       this.p=p;
+        this.p = p;
     }
 
     /**
@@ -139,38 +136,35 @@ public class NewArbeitsschritt extends javax.swing.JDialog {
     }//GEN-LAST:event_tfTextActionPerformed
 
     private void btnabbrechenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnabbrechenActionPerformed
-       this.isOk=false;
-       this.dispose();
+        this.isOk = false;
+        this.dispose();
     }//GEN-LAST:event_btnabbrechenActionPerformed
 
     private void btnokActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnokActionPerformed
-       if(this.tfBezeichnung.getText()!=null&&!tfBezeichnung.getText().equals("")&&
-               this.tfText.getText()!=null&&!tfText.getText().equals("")){
+        if (this.tfBezeichnung.getText() != null && !tfBezeichnung.getText().equals("")
+                && this.tfText.getText() != null && !tfText.getText().equals("")) {
            //Arbeitsschritt zusammenbauen
-           //int arbeitsschrittid, int projectid, int progressid, String bezeichnung, String text
-           String bezeichnung=this.tfBezeichnung.getText();
-           String text=this.tfText.getText();
-           System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-           this.a=new Arbeitsschritt(this.dbaccess.getArbeitsschrittId(bezeichnung,p.getProjektid() ),p.getProjektid(),0,bezeichnung,text);
-             int mitarbeiterid=Integer.parseInt(this.cbMitarbeiter.getSelectedItem().toString().split(",")[0]);
-           System.out.println(mitarbeiterid);
+            //int arbeitsschrittid, int projectid, int progressid, String bezeichnung, String text
+            String bezeichnung = this.tfBezeichnung.getText();
+            String text = this.tfText.getText();
+            System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+            this.a = new Arbeitsschritt(this.dbaccess.getArbeitsschrittId(bezeichnung, p.getProjektid()), p.getProjektid(), 0, bezeichnung, text);
+            int mitarbeiterid = Integer.parseInt(this.cbMitarbeiter.getSelectedItem().toString().split(",")[0]);
+            System.out.println(mitarbeiterid);
            //ausgewälten Mitarbeiter suchen
-        
-           
-       
-            
-           for (int i = 0; i < this.alleMitarbeiter.size(); i++) {
-              if(alleMitarbeiter.get(i).getId()==mitarbeiterid) {
-                  m=alleMitarbeiter.get(i);
-              }
-           }
-          
-            if(this.m!=null&&this.a!=null){
-                this.isOk=true;
-                   this.setVisible(false);
+
+            for (int i = 0; i < this.alleMitarbeiter.size(); i++) {
+                if (alleMitarbeiter.get(i).getId() == mitarbeiterid) {
+                    m = alleMitarbeiter.get(i);
+                }
             }
-        
-       }
+
+            if (this.m != null && this.a != null) {
+                this.isOk = true;
+                this.setVisible(false);
+            }
+
+        }
     }//GEN-LAST:event_btnokActionPerformed
 
     /**
@@ -227,6 +221,4 @@ public class NewArbeitsschritt extends javax.swing.JDialog {
     private javax.swing.JTextField tfText;
     // End of variables declaration//GEN-END:variables
 
-   
-   
 }

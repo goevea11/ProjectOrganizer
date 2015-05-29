@@ -15,6 +15,10 @@ import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import bl.Arbeitsschritt;
 import bl.Mitarbeiter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import javax.swing.JList;
+
 /**
  *
  * @author Veronika
@@ -22,10 +26,9 @@ import bl.Mitarbeiter;
 public class TaskboardGUI extends javax.swing.JFrame {
 
     /**
-     * 
+     *
      * Creates new form Taskboard
      */
-    
     private DefaultListModel todomodel;
     private DefaultListModel inworkmodel;
     private DefaultListModel finishedmodel;
@@ -35,27 +38,27 @@ public class TaskboardGUI extends javax.swing.JFrame {
     private LinkedList<Arbeitsschritt> finishedlist;
     private Projekt p;
     private NewArbeitsschritt newarbeitsschrittdialog;
+
     public TaskboardGUI(Projekt projekt) {
         initComponents();
-        p= projekt;
+        p = projekt;
         todomodel = new DefaultListModel();
         this.todoList.setModel(todomodel);
         inworkmodel = new DefaultListModel();
         this.inworkList.setModel(inworkmodel);
         finishedmodel = new DefaultListModel();
         this.finishedList.setModel(finishedmodel);
-        dba= new DBAccess("proorg");
+        dba = new DBAccess("proorg");
         todolist = dba.getToDoList(p.getProjektid());
         inworklist = dba.getInWorkList(p.getProjektid());
         finishedlist = dba.getFinishedList(p.getProjektid());
-        todomodel=write(todolist,todomodel);
-        inworkmodel=write(inworklist,inworkmodel);
-        finishedmodel=write(finishedlist,finishedmodel);
-        newarbeitsschrittdialog=new NewArbeitsschritt(this, true, dba);
+        todomodel = write(todolist, todomodel);
+        inworkmodel = write(inworklist, inworkmodel);
+        finishedmodel = write(finishedlist, finishedmodel);
+        newarbeitsschrittdialog = new NewArbeitsschritt(this, true, dba);
         newarbeitsschrittdialog.setProjekt(p);
-        
-    }
 
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -100,6 +103,11 @@ public class TaskboardGUI extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
+        todoList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                todoListMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(todoList);
 
         jPanel1.add(jScrollPane1, java.awt.BorderLayout.CENTER);
@@ -137,6 +145,11 @@ public class TaskboardGUI extends javax.swing.JFrame {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
+        });
+        inworkList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                inworkListMouseClicked(evt);
+            }
         });
         jScrollPane2.setViewportView(inworkList);
 
@@ -176,6 +189,11 @@ public class TaskboardGUI extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
+        finishedList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                finishedListMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(finishedList);
 
         jPanel5.add(jScrollPane3, java.awt.BorderLayout.CENTER);
@@ -199,87 +217,95 @@ public class TaskboardGUI extends javax.swing.JFrame {
     private void todo_inwork_rightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_todo_inwork_rightActionPerformed
         int i = this.todoList.getSelectedIndex();
         String s = (String) this.todomodel.getElementAt(i);
-        String[] sf= s.split(",");
-        sf[0]=sf[0].trim();
-        boolean b = dba.updateArbeitsschritt(p.getProjektid(),sf[0],1);
-        if(b)
-        {
+        String[] sf = s.split(",");
+        sf[0] = sf[0].trim();
+        boolean b = dba.updateArbeitsschritt(p.getProjektid(), sf[0], 1);
+        if (b) {
             this.jTextField1.setText("successful!");
         }
         inworkmodel.clear();
         todomodel.clear();
-        this.todolist=dba.getToDoList(this.p.getProjektid());
-        this.inworklist=dba.getInWorkList(this.p.getProjektid());
-        inworkmodel=this.write(inworklist, inworkmodel);
-        todomodel=this.write(todolist, todomodel);
+        this.todolist = dba.getToDoList(this.p.getProjektid());
+        this.inworklist = dba.getInWorkList(this.p.getProjektid());
+        inworkmodel = this.write(inworklist, inworkmodel);
+        todomodel = this.write(todolist, todomodel);
     }//GEN-LAST:event_todo_inwork_rightActionPerformed
 
     private void todo_inwork_leftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_todo_inwork_leftActionPerformed
         int i = this.inworkList.getSelectedIndex();
         String s = (String) this.inworkmodel.getElementAt(i);
-        String[] sf= s.split(",");
-        sf[0]=sf[0].trim();
-        boolean b = dba.updateArbeitsschritt(p.getProjektid(),sf[0],0);
-        if(b)
-        {
+        String[] sf = s.split(",");
+        sf[0] = sf[0].trim();
+        boolean b = dba.updateArbeitsschritt(p.getProjektid(), sf[0], 0);
+        if (b) {
             this.jTextField1.setText("successful!");
         }
-         inworkmodel.clear();
+        inworkmodel.clear();
         todomodel.clear();
-        this.todolist=dba.getToDoList(this.p.getProjektid());
-        this.inworklist=dba.getInWorkList(this.p.getProjektid());
-        inworkmodel=this.write(inworklist, inworkmodel);
-        todomodel=this.write(todolist, todomodel);
+        this.todolist = dba.getToDoList(this.p.getProjektid());
+        this.inworklist = dba.getInWorkList(this.p.getProjektid());
+        inworkmodel = this.write(inworklist, inworkmodel);
+        todomodel = this.write(todolist, todomodel);
     }//GEN-LAST:event_todo_inwork_leftActionPerformed
 
     private void inwork_finished_rightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inwork_finished_rightActionPerformed
         int i = this.inworkList.getSelectedIndex();
         String s = (String) this.inworkmodel.getElementAt(i);
-        String[] sf= s.split(",");
-        sf[0]=sf[0].trim();
-        boolean b = dba.updateArbeitsschritt(p.getProjektid(),sf[0],2);
-        if(b)
-        {
+        String[] sf = s.split(",");
+        sf[0] = sf[0].trim();
+        boolean b = dba.updateArbeitsschritt(p.getProjektid(), sf[0], 2);
+        if (b) {
             this.jTextField1.setText("successful!");
         }
         inworkmodel.clear();
         finishedmodel.clear();
-        this.finishedlist=dba.getFinishedList(p.getProjektid());
-        this.inworklist=dba.getInWorkList(this.p.getProjektid());
-        inworkmodel=this.write(inworklist, inworkmodel);
-        finishedmodel=this.write(finishedlist, finishedmodel);
-        
+        this.finishedlist = dba.getFinishedList(p.getProjektid());
+        this.inworklist = dba.getInWorkList(this.p.getProjektid());
+        inworkmodel = this.write(inworklist, inworkmodel);
+        finishedmodel = this.write(finishedlist, finishedmodel);
+
     }//GEN-LAST:event_inwork_finished_rightActionPerformed
 
     private void inwork_finished_leftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inwork_finished_leftActionPerformed
         int i = this.finishedList.getSelectedIndex();
         String s = (String) this.finishedmodel.getElementAt(i);
-        String[] sf= s.split(",");
-        sf[0]=sf[0].trim();
-        boolean b = dba.updateArbeitsschritt(p.getProjektid(),sf[0],1);
-        if(b)
-        {
+        String[] sf = s.split(",");
+        sf[0] = sf[0].trim();
+        boolean b = dba.updateArbeitsschritt(p.getProjektid(), sf[0], 1);
+        if (b) {
             this.jTextField1.setText("successful!");
         }
-        
+
         inworkmodel.clear();
         finishedlist.clear();
-        this.finishedlist=dba.getFinishedList(p.getProjektid());
-        this.inworklist=dba.getInWorkList(this.p.getProjektid());
-        inworkmodel=this.write(inworklist, inworkmodel);
-        finishedmodel=this.write(finishedlist, finishedmodel);
-        
+        this.finishedlist = dba.getFinishedList(p.getProjektid());
+        this.inworklist = dba.getInWorkList(this.p.getProjektid());
+        inworkmodel = this.write(inworklist, inworkmodel);
+        finishedmodel = this.write(finishedlist, finishedmodel);
+
     }//GEN-LAST:event_inwork_finished_leftActionPerformed
 
     private void btnaddArbeitsschrittActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaddArbeitsschrittActionPerformed
-    this.newarbeitsschrittdialog.setVisible(true);
-       
-       if(newarbeitsschrittdialog.isOk){
-           Arbeitsschritt a=newarbeitsschrittdialog.a;
-           Mitarbeiter m=newarbeitsschrittdialog.getMitarbeiter();
-           this.dba.insertArbeitsschritt(p, m, a);
-       }
+        this.newarbeitsschrittdialog.setVisible(true);
+
+        if (newarbeitsschrittdialog.isOk) {
+            Arbeitsschritt a = newarbeitsschrittdialog.a;
+            Mitarbeiter m = newarbeitsschrittdialog.getMitarbeiter();
+            this.dba.insertArbeitsschritt(p, m, a);
+        }
     }//GEN-LAST:event_btnaddArbeitsschrittActionPerformed
+
+    private void todoListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_todoListMouseClicked
+        mouseclick(todoList, todomodel);
+    }//GEN-LAST:event_todoListMouseClicked
+
+    private void inworkListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inworkListMouseClicked
+        mouseclick(inworkList, inworkmodel);
+    }//GEN-LAST:event_inworkListMouseClicked
+
+    private void finishedListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_finishedListMouseClicked
+        mouseclick(finishedList, finishedmodel);
+    }//GEN-LAST:event_finishedListMouseClicked
 
     /**
      * @param args the command line arguments
@@ -312,7 +338,7 @@ public class TaskboardGUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-               // new TaskboardGUI().setVisible(true);
+                // new TaskboardGUI().setVisible(true);
             }
         });
     }
@@ -338,12 +364,19 @@ public class TaskboardGUI extends javax.swing.JFrame {
     private javax.swing.JButton todo_inwork_right;
     // End of variables declaration//GEN-END:variables
 
-    
     private DefaultListModel write(LinkedList<Arbeitsschritt> list, DefaultListModel m) {
-        for(Arbeitsschritt a: list)
-        {
-            m.addElement(a.getArbeitsschrittid()+", "+a.getBezeichnung());
+        for (Arbeitsschritt a : list) {
+            m.addElement(a.getArbeitsschrittid() + ", " + a.getBezeichnung());
         }
         return m;
+    }
+
+    private void mouseclick(JList list, DefaultListModel model) {
+        int i = list.getSelectedIndex();
+        String s = (String) model.getElementAt(i);
+        String[] sf = s.split(",");
+        sf[0] = sf[0].trim();
+        int arbeitsid = Integer.parseInt(sf[0]);
+        String name = dba.getMitarbeiterFromArbeitsschritt(this.p.getProjektid(), arbeitsid);
     }
 }

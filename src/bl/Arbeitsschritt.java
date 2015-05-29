@@ -10,6 +10,7 @@ package bl;
  * @author Veronika
  */
 public class Arbeitsschritt {
+
     private int arbeitsschrittid;
     private int projectid;
     private int progressid;
@@ -68,7 +69,5 @@ public class Arbeitsschritt {
     public String toString() {
         return this.bezeichnung;
     }
-    
-    
-    
+
 }

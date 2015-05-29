@@ -1,26 +1,27 @@
-
 package bl;
 
 import java.util.Date;
 
 public class Projekt {
+
     private int projektid;
     private String name;
-    private Date anfangsdatum,enddatum;
+    private Date anfangsdatum, enddatum;
 
     public Projekt(String name, Date anfangsdatum, Date enddatum) {
-       
+
         this.name = name;
         this.anfangsdatum = anfangsdatum;
         this.enddatum = enddatum;
     }
 
-     public Projekt(int projektid, String name, Date anfangsdatum, Date enddatum) {
-       this.projektid=projektid;
+    public Projekt(int projektid, String name, Date anfangsdatum, Date enddatum) {
+        this.projektid = projektid;
         this.name = name;
         this.anfangsdatum = anfangsdatum;
         this.enddatum = enddatum;
     }
+
     public int getProjektid() {
         return projektid;
     }
@@ -52,8 +53,5 @@ public class Projekt {
     public void setEnddatum(Date enddatum) {
         this.enddatum = enddatum;
     }
-    
-    
-    
-    
+
 }

@@ -23,12 +23,13 @@ public class NeuesProjekt extends javax.swing.JDialog {
     public NeuesProjekt(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-         isOk=false;
-        dateformat=new SimpleDateFormat("dd.MM.yyyy");
+        isOk = false;
+        dateformat = new SimpleDateFormat("dd.MM.yyyy");
     }
     public boolean isOk;
     public Projekt p;
-        private SimpleDateFormat dateformat;
+    private SimpleDateFormat dateformat;
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -92,22 +93,22 @@ public class NeuesProjekt extends javax.swing.JDialog {
     }//GEN-LAST:event_tfnameActionPerformed
 
     private void btnabbrechenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnabbrechenActionPerformed
-        isOk=false;
+        isOk = false;
         this.dispose();
     }//GEN-LAST:event_btnabbrechenActionPerformed
 
     private void btnokActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnokActionPerformed
-      if( this.tfbeginndatum.getText().charAt(2)=='.'&&tfbeginndatum.getText().charAt(5)=='.'&&tfbeginndatum.getText().length()==10&&
-            this.tfenddatum.getText().charAt(2)=='.'&&tfenddatum.getText().charAt(5)=='.'&&tfenddatum.getText().length()==10 &&
-            this.tfname.getText()!=null&&!this.tfname.getText().equals("")){
+        if (this.tfbeginndatum.getText().charAt(2) == '.' && tfbeginndatum.getText().charAt(5) == '.' && tfbeginndatum.getText().length() == 10
+                && this.tfenddatum.getText().charAt(2) == '.' && tfenddatum.getText().charAt(5) == '.' && tfenddatum.getText().length() == 10
+                && this.tfname.getText() != null && !this.tfname.getText().equals("")) {
 
-            String projektname=this.tfname.getText();
-            String sbeginn=this.tfbeginndatum.getText();
-            String sende=this.tfenddatum.getText();
+            String projektname = this.tfname.getText();
+            String sbeginn = this.tfbeginndatum.getText();
+            String sende = this.tfenddatum.getText();
 
             try {
-                p=new Projekt(projektname, dateformat.parse(sbeginn), dateformat.parse(sende));
-                isOk=true;
+                p = new Projekt(projektname, dateformat.parse(sbeginn), dateformat.parse(sende));
+                isOk = true;
                 this.setVisible(false);
             } catch (ParseException ex) {
                 Logger.getLogger(NeuesProjekt.class.getName()).log(Level.SEVERE, null, ex);

@@ -29,34 +29,32 @@ public class ProjectGUI extends javax.swing.JFrame {
     /**
      * Creates new form ProjectGUI
      */
-   private LinkedList<Projekt> ll;
-   private DBAccess dba;
-   private ProjectTableModel prtablemodel;
+    private LinkedList<Projekt> ll;
+    private DBAccess dba;
+    private ProjectTableModel prtablemodel;
     private NeuesProjekt newprojectdialog;
     private MitarbeiterTableModel mittablemodel;
     private int gründerid;
-    int letzterklick=-1;
-   
-    
+    int letzterklick = -1;
+
     public ProjectGUI(int mid) {
         initComponents();
         TaskboardGUI tgui;
-        gründerid=mid;
-        dba=new DBAccess("proorg");
-        newprojectdialog=new NeuesProjekt(this,true);
+        gründerid = mid;
+        dba = new DBAccess("proorg");
+        newprojectdialog = new NeuesProjekt(this, true);
         ll = dba.getProjekte(mid);
-        mittablemodel=new MitarbeiterTableModel(new LinkedList<Mitarbeiter>());
-        prtablemodel=new ProjectTableModel(ll);
+        mittablemodel = new MitarbeiterTableModel(new LinkedList<Mitarbeiter>());
+        prtablemodel = new ProjectTableModel(ll);
         tabprojekte.setModel(prtablemodel);
         this.tabmitarbeiter.setModel(mittablemodel);
         dba = new DBAccess("proorg");
-      
-       
+
     }
-    
-     void setDBAccess(DBAccess access) {
-     this.dba=access;  
-     }
+
+    void setDBAccess(DBAccess access) {
+        this.dba = access;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -145,44 +143,42 @@ public class ProjectGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
-    
+
     private void tabprojekteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabprojekteMouseClicked
         JTable t = (JTable) evt.getComponent();
         int row = t.getSelectedRow();
-        int prid=(int) this.prtablemodel.getValueAt(row, 0);
-        if(this.letzterklick==row){
-         TaskboardGUI  tgui=new TaskboardGUI(ll.get(row));
-        tgui.setVisible(true); 
-       
-        }else{
-            
+        int prid = (int) this.prtablemodel.getValueAt(row, 0);
+        if (this.letzterklick == row) {
+            TaskboardGUI tgui = new TaskboardGUI(ll.get(row));
+            tgui.setVisible(true);
+
+        } else {
+
             try {
                 this.mittablemodel.setlist(dba.getMitarbeiterfromProjekt(prid));
                 this.tabmitarbeiter.setModel(mittablemodel);
-                
-                letzterklick=row;
+
+                letzterklick = row;
             } catch (SQLException ex) {
                 Logger.getLogger(ProjectGUI.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-       
+
     }//GEN-LAST:event_tabprojekteMouseClicked
 
-    
-    
+
     private void btncreateProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncreateProjektActionPerformed
-       this.newprojectdialog.setVisible(true);
-       
-       if(newprojectdialog.isOk){
-           Projekt p=newprojectdialog.p;
-           this.dba.insertProjekt(p, gründerid);
-       }
+        this.newprojectdialog.setVisible(true);
+
+        if (newprojectdialog.isOk) {
+            Projekt p = newprojectdialog.p;
+            this.dba.insertProjekt(p, gründerid);
+        }
     }//GEN-LAST:event_btncreateProjektActionPerformed
 
     private void tabprojekteMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabprojekteMouseEntered
-   
-      
+
+
     }//GEN-LAST:event_tabprojekteMouseEntered
 
     /**

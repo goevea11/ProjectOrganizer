@@ -22,14 +22,15 @@ public class NewMitarbeiter extends javax.swing.JDialog {
      * Creates new form NewMitarbeiter
      */
     public boolean isOk;
-    private String vorname,nachname,gebdatum,passwort;
+    private String vorname, nachname, gebdatum, passwort;
     private SimpleDateFormat dateformat;
     public Mitarbeiter m;
+
     public NewMitarbeiter(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        isOk=false;
-        dateformat=new SimpleDateFormat("dd.MM.yyyy");
+        isOk = false;
+        dateformat = new SimpleDateFormat("dd.MM.yyyy");
     }
 
     /**
@@ -91,30 +92,30 @@ public class NewMitarbeiter extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btncreateAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncreateAccountActionPerformed
-       if(tfvorname.getText()!=null&&!tfvorname.getText().equals("")&&
-            tfnachname.getText()!=null&&!tfnachname.getText().equals("")&&  
-               this.tfgebdatum.getText()!=null&&!tfgebdatum.getText().equals("")&&
-               tfgebdatum.getText().charAt(2)=='.'&&tfgebdatum.getText().charAt(5)=='.'&&tfgebdatum.getText().length()==10&&
-               tfpasswort.getPassword()!=null&&!tfpasswort.getPassword().equals("")){
-           vorname=tfvorname.getText();
-           nachname=tfnachname.getText();
-           gebdatum=tfgebdatum.getText();
-           passwort=new String(tfpasswort.getPassword());
-           Date d=new Date();
-           try {
-               m=new Mitarbeiter(vorname,nachname,dateformat.parse(gebdatum),passwort);
-           } catch (ParseException ex) {
-               Logger.getLogger(NewMitarbeiter.class.getName()).log(Level.SEVERE, null, ex);
-           }
-           this.isOk=true;
-           this.setVisible(false);
-       }
-            
+        if (tfvorname.getText() != null && !tfvorname.getText().equals("")
+                && tfnachname.getText() != null && !tfnachname.getText().equals("")
+                && this.tfgebdatum.getText() != null && !tfgebdatum.getText().equals("")
+                && tfgebdatum.getText().charAt(2) == '.' && tfgebdatum.getText().charAt(5) == '.' && tfgebdatum.getText().length() == 10
+                && tfpasswort.getPassword() != null && !tfpasswort.getPassword().equals("")) {
+            vorname = tfvorname.getText();
+            nachname = tfnachname.getText();
+            gebdatum = tfgebdatum.getText();
+            passwort = new String(tfpasswort.getPassword());
+            Date d = new Date();
+            try {
+                m = new Mitarbeiter(vorname, nachname, dateformat.parse(gebdatum), passwort);
+            } catch (ParseException ex) {
+                Logger.getLogger(NewMitarbeiter.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            this.isOk = true;
+            this.setVisible(false);
+        }
+
     }//GEN-LAST:event_btncreateAccountActionPerformed
 
     private void btnabbrechenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnabbrechenActionPerformed
-          this.isOk=false;
-          dispose();
+        this.isOk = false;
+        dispose();
     }//GEN-LAST:event_btnabbrechenActionPerformed
 
     /**

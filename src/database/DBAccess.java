@@ -34,8 +34,8 @@ public class DBAccess {
     /**
      * Creates a new instance of DBAccess
      */
-    public DBAccess(String dbname){
-        
+    public DBAccess(String dbname) {
+
         try {
             db = Database.getInstance();
             db.connect(dbname);
@@ -109,35 +109,27 @@ public class DBAccess {
         return returnname;
     }
 
-    
-    public LinkedList<Mitarbeiter> getMitarbeiterfromProjekt(int projektid) throws SQLException{
+    public LinkedList<Mitarbeiter> getMitarbeiterfromProjekt(int projektid) throws SQLException {
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-        LinkedList<Mitarbeiter> mitarbeiterlist=new LinkedList<Mitarbeiter>();
-            Statement stat = db.getCon().createStatement();
-       String sqlString="SELECT m.mitarbeiterid, m.name,m.firstname,  m.birthdate, m.password"
-               + " FROM mitarbeiter m INNER JOIN Verwaltung v ON(m.mitarbeiterid=v.mitarbeiterid)"
-               + " WHERE v.projektid="+projektid+";";
-       
-       
-        ResultSet rs = stat.executeQuery(sqlString);
-            while (rs.next()) {
-                      java.sql.Date sqlbirthdate=rs.getDate(4);
-                Date birthdate=new Date(sqlbirthdate.getTime());
-                
-                
-                //int id, String vorname, String nachname, Date gebdatum, String passwort
-                mitarbeiterlist.add(new Mitarbeiter(rs.getInt(1), rs.getString(2), rs.getString(3), birthdate, rs.getString(5)));
-            }
-       
-       
+        LinkedList<Mitarbeiter> mitarbeiterlist = new LinkedList<Mitarbeiter>();
+        Statement stat = db.getCon().createStatement();
+        String sqlString = "SELECT m.mitarbeiterid, m.name,m.firstname,  m.birthdate, m.password"
+                + " FROM mitarbeiter m INNER JOIN Verwaltung v ON(m.mitarbeiterid=v.mitarbeiterid)"
+                + " WHERE v.projektid=" + projektid + ";";
 
-       
-       return mitarbeiterlist;
-       
+        ResultSet rs = stat.executeQuery(sqlString);
+        while (rs.next()) {
+            java.sql.Date sqlbirthdate = rs.getDate(4);
+            Date birthdate = new Date(sqlbirthdate.getTime());
+
+            //int id, String vorname, String nachname, Date gebdatum, String passwort
+            mitarbeiterlist.add(new Mitarbeiter(rs.getInt(1), rs.getString(2), rs.getString(3), birthdate, rs.getString(5)));
+        }
+
+        return mitarbeiterlist;
+
     }
-    
-   
-    
+
     public void insertProjekt(Projekt p, int gründerid) {
 
         try {
@@ -146,88 +138,81 @@ public class DBAccess {
 
             Statement stat = db.getCon().createStatement();
 
-            
             //Projekt einfügen
             String sqlString = "INSERT INTO \"projekt\""
                     + " VALUES ((SELECT MAX(projektid) FROM \"projekt\")+1, '" + p.getName() + "', TO_DATE('" + sdf.format(p.getAnfangsdatum()) + "','dd.MM.yyyy'),TO_DATE('" + sdf.format(p.getAnfangsdatum()) + "','dd.MM.yyyy'));";
 
-           
-              stat.executeUpdate(sqlString);
+            stat.executeUpdate(sqlString);
             //Verbindung zwischen Mitarbeiter und Projekt herstellen
-         //1. Projektnummer herausholen
-             p.setProjektid(this.getProjektId(p.getName()));
-             
-             //2. Arbeitsschritt zur Erstellung des Projektes einfügen
-             String bezeichnung="Projekterstellung";
-             sqlString="INSERT INTO arbeitsschritt "
-                     + "VALUES ((SELECT MAX(arbeitsschrittid) FROM arbeitsschritt)+1,"+p.getProjektid()+", '"+bezeichnung+"', 'Erstellung von "+p.getName()+"', 2);";
-          stat.executeUpdate(sqlString);
-           int arbeitsschrittid=this.getArbeitsschrittId(bezeichnung,p.getProjektid());
-           
-           //3. Datensatz in Verwaltung einfügen
-           
-           sqlString="INSERT INTO verwaltung VALUES("+gründerid+","+arbeitsschrittid+","+p.getProjektid()+");";
-           stat.executeUpdate(sqlString);
-           stat.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    
-    public void insertArbeitsschritt(Projekt p, Mitarbeiter m, Arbeitsschritt a){
-       
-        try {
-            //Arbeitsschritt zur Erstellung des Projektes einfügen
-        Statement stat = db.getCon().createStatement();
-            
-            String sqlString="INSERT INTO arbeitsschritt "
-                     + "VALUES ((SELECT MAX(arbeitsschrittid) FROM arbeitsschritt)+1,"+p.getProjektid()+", '"+a.getBezeichnung()+"', '"+a.getText()+"',0);";
-          stat.executeUpdate(sqlString);
-           int arbeitsschrittid=this.getArbeitsschrittId(a.getBezeichnung(),p.getProjektid());
-           
-           //3. Datensatz in Verwaltung einfügen
-           
-           sqlString="INSERT INTO verwaltung VALUES("+m.getId()+","+arbeitsschrittid+","+p.getProjektid()+");";
-           stat.executeUpdate(sqlString);
+            //1. Projektnummer herausholen
+            p.setProjektid(this.getProjektId(p.getName()));
+
+            //2. Arbeitsschritt zur Erstellung des Projektes einfügen
+            String bezeichnung = "Projekterstellung";
+            sqlString = "INSERT INTO arbeitsschritt "
+                    + "VALUES ((SELECT MAX(arbeitsschrittid) FROM arbeitsschritt)+1," + p.getProjektid() + ", '" + bezeichnung + "', 'Erstellung von " + p.getName() + "', 2);";
+            stat.executeUpdate(sqlString);
+            int arbeitsschrittid = this.getArbeitsschrittId(bezeichnung, p.getProjektid());
+
+            //3. Datensatz in Verwaltung einfügen
+            sqlString = "INSERT INTO verwaltung VALUES(" + gründerid + "," + arbeitsschrittid + "," + p.getProjektid() + ");";
+            stat.executeUpdate(sqlString);
             stat.close();
         } catch (SQLException ex) {
             Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
     }
-    
-    
-    public int getArbeitsschrittId(String bezeichnung, int projektid){
-      String sqlString=" SELECT arbeitsschrittid "
-               + "FROM \"arbeitsschritt\""
-               + "WHERE bezeichnung='"+bezeichnung+"' AND projektid="+projektid+";";
-       
+
+    public void insertArbeitsschritt(Projekt p, Mitarbeiter m, Arbeitsschritt a) {
+
         try {
-             Statement stat = db.getCon().createStatement();    
-       ResultSet rs = stat.executeQuery(sqlString);
-            while (rs.next()) {
-                return rs.getInt(1);
-            }  
+            //Arbeitsschritt zur Erstellung des Projektes einfügen
+            Statement stat = db.getCon().createStatement();
+
+            String sqlString = "INSERT INTO arbeitsschritt "
+                    + "VALUES ((SELECT MAX(arbeitsschrittid) FROM arbeitsschritt)+1," + p.getProjektid() + ", '" + a.getBezeichnung() + "', '" + a.getText() + "',0);";
+            stat.executeUpdate(sqlString);
+            int arbeitsschrittid = this.getArbeitsschrittId(a.getBezeichnung(), p.getProjektid());
+
+            //3. Datensatz in Verwaltung einfügen
+            sqlString = "INSERT INTO verwaltung VALUES(" + m.getId() + "," + arbeitsschrittid + "," + p.getProjektid() + ");";
+            stat.executeUpdate(sqlString);
+            stat.close();
         } catch (SQLException ex) {
             Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return -1;  
-        
+
     }
-    
-    public int getProjektId(String name){
-       String sqlString=" SELECT projektid "
-               + "FROM \"projekt\""
-               + "WHERE name='"+name+"';";
-       
+
+    public int getArbeitsschrittId(String bezeichnung, int projektid) {
+        String sqlString = " SELECT arbeitsschrittid "
+                + "FROM \"arbeitsschritt\""
+                + "WHERE bezeichnung='" + bezeichnung + "' AND projektid=" + projektid + ";";
+
         try {
-             Statement stat = db.getCon().createStatement();    
-       ResultSet rs = stat.executeQuery(sqlString);
+            Statement stat = db.getCon().createStatement();
+            ResultSet rs = stat.executeQuery(sqlString);
             while (rs.next()) {
                 return rs.getInt(1);
-            }  
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
+
+    }
+
+    public int getProjektId(String name) {
+        String sqlString = " SELECT projektid "
+                + "FROM \"projekt\""
+                + "WHERE name='" + name + "';";
+
+        try {
+            Statement stat = db.getCon().createStatement();
+            ResultSet rs = stat.executeQuery(sqlString);
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
         } catch (SQLException ex) {
             Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -240,24 +225,18 @@ public class DBAccess {
         //Zuerst Mitarbeitet, MitarbeiterProject und Project joinen
         try {
             Statement stat = db.getCon().createStatement();
-//            String sqlString = "SELECT projektid, name , begindate , enddate "
-//                    + "FROM projekt "
-//                    + "WHERE projektid = (SELECT projektid "
-//                    + "FROM verwaltung "
-//                    + "WHERE mitarbeiterid = " + id + ");";
-            
-            
-            String sqlString="SELECT p.projektid, p.name , p.begindate , p.enddate "
+
+            String sqlString = "SELECT p.projektid, p.name , p.begindate , p.enddate "
                     + "FROM projekt p INNER JOIN verwaltung v ON(p.projektid=v.projektid) "
-                    + "WHERE v.mitarbeiterid = "+id+";";
+                    + "WHERE v.mitarbeiterid = " + id + ";";
             System.out.println(sqlString);
             ResultSet rs = stat.executeQuery(sqlString);
             SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
             while (rs.next()) {
-               java.sql.Date sqlbeginndate=rs.getDate(3);
-                java.sql.Date sqlenddate=rs.getDate(4);
-                Date beginndate=new Date(sqlbeginndate.getTime());
-                 Date enddate=new Date(sqlenddate.getTime());
+                java.sql.Date sqlbeginndate = rs.getDate(3);
+                java.sql.Date sqlenddate = rs.getDate(4);
+                Date beginndate = new Date(sqlbeginndate.getTime());
+                Date enddate = new Date(sqlenddate.getTime());
                 projekte.add(new Projekt(rs.getInt(1), rs.getString(2), beginndate, enddate));
             }
             stat.close();
@@ -328,59 +307,48 @@ public class DBAccess {
         return l;
     }
 
-    
-
     public boolean updateArbeitsschritt(int projektid, String sf, int i) {
         try {
             Statement stat = db.getCon().createStatement();
-            String sqlString = "UPDATE arbeitsschritt"
-                    + "SET progress="+i+""
-                    + "WHERE projektid='"+projektid+"' AND arbeitsschrittid='"+sf+"';";
+            String sqlString = "UPDATE arbeitsschritt "
+                    + "SET progress=" + i + ""
+                    + " WHERE projektid='" + projektid + "' AND arbeitsschrittid='" + sf + "';";
             stat.executeUpdate(sqlString);
         } catch (SQLException ex) {
-            
+
             Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
         return true;
     }
-    
-    
-    
-    
-    
-    public LinkedList<Mitarbeiter> getAllMitarbeiter(){
-         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-        LinkedList<Mitarbeiter> mitarbeiterlist=new LinkedList<Mitarbeiter>();
-            Statement stat;
+
+    public LinkedList<Mitarbeiter> getAllMitarbeiter() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+        LinkedList<Mitarbeiter> mitarbeiterlist = new LinkedList<Mitarbeiter>();
+        Statement stat;
         try {
             stat = db.getCon().createStatement();
-            String sqlString="SELECT m.mitarbeiterid, m.name,m.firstname,  m.birthdate, m.password"
-               + " FROM mitarbeiter m;";
+            String sqlString = "SELECT m.mitarbeiterid, m.name,m.firstname,  m.birthdate, m.password"
+                    + " FROM mitarbeiter m;";
             ResultSet rs = stat.executeQuery(sqlString);
             while (rs.next()) {
-                      java.sql.Date sqlbirthdate=rs.getDate(4);
-                Date birthdate=new Date(sqlbirthdate.getTime());
-                
-                
+                java.sql.Date sqlbirthdate = rs.getDate(4);
+                Date birthdate = new Date(sqlbirthdate.getTime());
+
                 //int id, String vorname, String nachname, Date gebdatum, String passwort
                 mitarbeiterlist.add(new Mitarbeiter(rs.getInt(1), rs.getString(2), rs.getString(3), birthdate, rs.getString(5)));
             }
-       
-       
+
         } catch (SQLException ex) {
             Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
         }
-       
-             
-       
-       
-        
+        return mitarbeiterlist;
 
-       
-       return mitarbeiterlist;
-       
     }
-    
-    
+
+    public String getMitarbeiterFromArbeitsschritt(int projektid, int arbeitsid) {
+        String name = "";
+        return name;
+    }
+
 }

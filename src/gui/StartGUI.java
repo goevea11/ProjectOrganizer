@@ -26,10 +26,11 @@ public class StartGUI extends javax.swing.JFrame {
      */
     private DBAccess access;
     private NewMitarbeiter newmitarbeiterdialog;
+
     public StartGUI() throws IOException, FileNotFoundException, ClassNotFoundException, SQLException {
         initComponents();
-        access=new DBAccess("proorg");
-        this.newmitarbeiterdialog=new NewMitarbeiter(this,true);
+        access = new DBAccess("proorg");
+        this.newmitarbeiterdialog = new NewMitarbeiter(this, true);
     }
 
     /**
@@ -95,9 +96,7 @@ public class StartGUI extends javax.swing.JFrame {
             ProjectGUI projectgui=new ProjectGUI(mid);
             projectgui.setVisible(true);
             this.dispose();
-        }
-        else
-        {
+        } else {
             JOptionPane.showMessageDialog(this, "Bitte erneut versuchen!");
             tfpasswort.setText("");
         }
@@ -106,8 +105,8 @@ public class StartGUI extends javax.swing.JFrame {
     private void btncreateaccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncreateaccountActionPerformed
         //Dialog aufrufen, der den neuen Mitarbeiter erstellt
         this.newmitarbeiterdialog.setVisible(true);
-        if(newmitarbeiterdialog.isOk){
-            Mitarbeiter m=newmitarbeiterdialog.m;
+        if (newmitarbeiterdialog.isOk) {
+            Mitarbeiter m = newmitarbeiterdialog.m;
             access.insertMitarbeiter(m);
         }
     }//GEN-LAST:event_btncreateaccountActionPerformed
