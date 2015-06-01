@@ -11,6 +11,8 @@ import java.util.Date;
  *
  * @author Veronika
  */
+
+// Beansklasse für den Mitarbeiter
 public class Mitarbeiter {
 
     int id;
