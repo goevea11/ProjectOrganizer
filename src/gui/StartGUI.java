@@ -17,7 +17,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Veronika
+ * @author Dominik
  */
 public class StartGUI extends javax.swing.JFrame {
 
