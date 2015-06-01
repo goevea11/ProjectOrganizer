@@ -402,4 +402,23 @@ public class DBAccess {
         return bez;
     }
 
+    
+    
+    public void removeArbeitsschritt(int projektid, int arbeitsschrittid){
+            //Diese Methode löscht anhand von projektid und arbeitsschrittid einen vorher ausgewählten Arbeitsschritt aus der DB
+        try {
+             Statement stat = db.getCon().createStatement();
+            String sqlString = "DELETE FROM verwaltung"
+                             + "WHERE projektid = "+projektid+" AND arbeitsschrittid= "+arbeitsschrittid+" ;";
+            stat.executeUpdate(sqlString);
+              sqlString = "DELETE FROM arbeitsschritt"
+                             + "WHERE projektid = "+projektid+" AND arbeitsschrittid= "+arbeitsschrittid+" ;";
+            stat.executeUpdate(sqlString);
+            stat.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }
 }
