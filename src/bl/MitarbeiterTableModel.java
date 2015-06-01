@@ -9,7 +9,8 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author Domi
  */
-// Table Model für die Mitarbeitertabelle
+// Table Model für die Mitarbeitertabelle in der ProjectGUI. 
+//Sie zeigt, welche Mitarbeiter bei welchem Projekt eingeteilt sind. 
 public class MitarbeiterTableModel extends AbstractTableModel {
 
     private String[] colName = new String[]{"ID", "Name", "Geburtsdatum"};
