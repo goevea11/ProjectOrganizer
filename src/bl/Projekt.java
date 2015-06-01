@@ -1,13 +1,12 @@
 package bl;
 
 import java.util.Date;
-
+// Beans Klasse für Projekte
 public class Projekt {
 
     private int projektid;
     private String name;
     private Date anfangsdatum, enddatum;
-
     public Projekt(String name, Date anfangsdatum, Date enddatum) {
 
         this.name = name;
