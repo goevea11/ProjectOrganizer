@@ -9,6 +9,8 @@ package bl;
  *
  * @author Veronika
  */
+
+// Beans Klasse für den Arbeitsschritt
 public class Arbeitsschritt {
 
     private int arbeitsschrittid;
