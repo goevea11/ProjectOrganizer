@@ -17,12 +17,10 @@ import javax.swing.JComboBox;
 /**
  *
  * @author Domi
+ * Dieser Dialog erstellt einen neuen Arbeitsschritt und teilt einen Mitarbeiter dazu ein.
+ * 
  */
 public class NewArbeitsschritt extends javax.swing.JDialog {
-
-    /**
-     * Creates new form NewArbeitsschritt
-     */
     public boolean isOk;
     public Arbeitsschritt a;
     private Mitarbeiter m;
@@ -141,6 +139,7 @@ public class NewArbeitsschritt extends javax.swing.JDialog {
     }//GEN-LAST:event_btnabbrechenActionPerformed
 
     private void btnokActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnokActionPerformed
+        //Baut das Arbeitsschritt- Objekt aus den eingegebenen Daten zusammen
         if (this.tfBezeichnung.getText() != null && !tfBezeichnung.getText().equals("")
                 && this.tfText.getText() != null && !tfText.getText().equals("")) {
            //Arbeitsschritt zusammenbauen

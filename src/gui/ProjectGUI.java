@@ -17,7 +17,11 @@ import javax.swing.table.AbstractTableModel;
 
 /**
  *
- * @author Domi
+ * @author Dominik
+ * In dieser GUI werden die Projekte angezeigt, 
+ * denen der Mitarbeiter zugeteilt ist, welcher sich vorher angemeldet hat.
+ * Man kann auch ein neues Projekt erstellen, 
+ * für welches man dann logischerweise als einziger und als Gründer eingetragen ist
  */
 public class ProjectGUI extends javax.swing.JFrame {
 
@@ -38,12 +42,15 @@ public class ProjectGUI extends javax.swing.JFrame {
         gründerid = mid;
         dba = new DBAccess("proorg");
         newprojectdialog = new NeuesProjekt(this, true);
+        
+        //Holt eine Liste mit allen Projekten, an denen ein Mitarbeiter beteiligt ist
         ll = dba.getProjekte(mid);
+        
         mittablemodel = new MitarbeiterTableModel(new LinkedList<Mitarbeiter>());
         prtablemodel = new ProjectTableModel(ll);
         tabprojekte.setModel(prtablemodel);
         this.tabmitarbeiter.setModel(mittablemodel);
-        dba = new DBAccess("proorg");
+        
 
     }
 
@@ -140,18 +147,25 @@ public class ProjectGUI extends javax.swing.JFrame {
 
 
     private void tabprojekteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabprojekteMouseClicked
-        //Methode, die beim Klick auf die obere Tabelle (Auflistung der Projekte) ausgelöst wird.
-        //
+        /*
+        Methode, die beim Klick auf die obere Tabelle (Auflistung der Projekte) ausgelöst wird.
+        1. Klick:
+        Die zum Projekt zugehörigen Mitarbeiter werden im unteren Teil der GUI angezeigt
+        2. Klick:
+        Man kommt zur TaskboardGUI, in welcher alle Arbeitsschritte(+Beschreibung, zugeteilter Mitarbeiter, Fertigstellungsgrad) 
+        */
         JTable t = (JTable) evt.getComponent();
         int row = t.getSelectedRow();
         int prid = (int) this.prtablemodel.getValueAt(row, 0);
         if (this.letzterklick == row) {
+            //Taskboardgui öffnen, wenn 2 mal geklickt
             TaskboardGUI tgui = new TaskboardGUI(ll.get(row));
             tgui.setVisible(true);
 
         } else {
 
             try {
+                //Zeigt die zugehörigen Mitarbeiter zum Projekt an
                 this.mittablemodel.setlist(dba.getMitarbeiterfromProjekt(prid));
                 this.tabmitarbeiter.setModel(mittablemodel);
 
@@ -165,6 +179,7 @@ public class ProjectGUI extends javax.swing.JFrame {
 
 
     private void btncreateProjektActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncreateProjektActionPerformed
+        //Hier wird der Dialog zur Erstellung eines neuen Projektes aufgerufen
         this.newprojectdialog.setVisible(true);
 
         if (newprojectdialog.isOk) {

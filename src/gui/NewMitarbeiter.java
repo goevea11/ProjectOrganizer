@@ -92,7 +92,8 @@ public class NewMitarbeiter extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btncreateAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncreateAccountActionPerformed
-       //"Baut" einen Mitarbeiter aus den Eingegebenen Daten zusammen
+       //"Baut" einen Mitarbeiter aus den Eingegebenen Daten zusammen,
+       //welcher dann von der StartGUI abgefragt wird
         if (tfvorname.getText() != null && !tfvorname.getText().equals("")
                 && tfnachname.getText() != null && !tfnachname.getText().equals("")
                 && this.tfgebdatum.getText() != null && !tfgebdatum.getText().equals("")
@@ -115,6 +116,7 @@ public class NewMitarbeiter extends javax.swing.JDialog {
     }//GEN-LAST:event_btncreateAccountActionPerformed
 
     private void btnabbrechenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnabbrechenActionPerformed
+        //Sperrt den Zugriff auf das Mitarbeiter- Objekt und schließt den Dialog
         this.isOk = false;
         dispose();
     }//GEN-LAST:event_btnabbrechenActionPerformed

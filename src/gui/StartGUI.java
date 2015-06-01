@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gui;
 
 import bl.Mitarbeiter;
@@ -18,6 +13,13 @@ import javax.swing.JOptionPane;
 /**
  *
  * @author Dominik
+ * Klassenbeschreibung:
+ * Mit dieser Klasse wird das Programm gestartet.
+ * Hier erfolgt das Anmelden mit dem Nachnamen(nicht case-sensitive) + Passwort(case-sensitive).
+ * Sollte noch kein Nutzer vorhanden sein, so kann man mit dem Klick auf "Neuen Account erstellen"
+ * einen neuen Account erstellen, welcher aber dann logischerweise noch bei keinem Projekt zugeteilt ist, 
+ * außer ein anderes Mitglied teilt ihn zu einem Projekt zu, oder er erstellt ein eigenes.
+ * 
  */
 public class StartGUI extends javax.swing.JFrame {
 
