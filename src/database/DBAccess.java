@@ -3,12 +3,10 @@ package database;
 import bl.Arbeitsschritt;
 import bl.Mitarbeiter;
 import bl.Projekt;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
@@ -17,7 +15,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Veronika
+ * @author Veronika und Dominik
  */
 public class DBAccess {
 
@@ -32,7 +30,7 @@ public class DBAccess {
     }
 
     /**
-     * Creates a new instance of DBAccess
+     * Hier werden alle Datenbankzugriffe durchgeführt
      */
     public DBAccess(String dbname) {
 
@@ -49,6 +47,7 @@ public class DBAccess {
     }
 
     public void insertMitarbeiter(Mitarbeiter m) {
+        // Fügt einen neuen Mitarbeiter in die Datenbank ein
         try {
             int maid = m.getId();
             String vn = m.getVorname();
@@ -69,7 +68,7 @@ public class DBAccess {
     }
 
     public int getMitarbeiter(String passwort, String nachname) {
-        //Holt einen Mitarbeiter mittels namen und passwort aus der Datenbank
+        //Holt die Mitarbeiterid mittels namen und passwort aus der Datenbank
         int ma = 0;
         try {
             Statement stat = db.getCon().createStatement();
@@ -258,6 +257,7 @@ public class DBAccess {
 
     public LinkedList<Arbeitsschritt> getToDoList(int id) {
 
+        // Gibt anhand der ProjektID alle Arbeitsschritte zrück, die noch zu erledigen sind
         LinkedList<Arbeitsschritt> l = new LinkedList<Arbeitsschritt>();
         try {
             Statement stat = db.getCon().createStatement();
@@ -278,6 +278,7 @@ public class DBAccess {
     }
 
     public LinkedList<Arbeitsschritt> getInWorkList(int id) {
+        // Gibt anhand der ProjektID alle Arbeitsschritte zrück, die in bearbeitung sind
         LinkedList<Arbeitsschritt> l = new LinkedList<Arbeitsschritt>();
         try {
             Statement stat = db.getCon().createStatement();
@@ -298,6 +299,7 @@ public class DBAccess {
     }
 
     public LinkedList<Arbeitsschritt> getFinishedList(int id) {
+        // Gibt anhand der ProjektID alle Arbeitsschritte zrück, die fertig erledigt sind
         LinkedList<Arbeitsschritt> l = new LinkedList<Arbeitsschritt>();
         try {
             Statement stat = db.getCon().createStatement();
@@ -318,6 +320,8 @@ public class DBAccess {
     }
 
     public boolean updateArbeitsschritt(int projektid, String sf, int i) {
+        // Verändert die Progressid anhand der ProjektID und der ArbeitsschrittID
+        // Die ProgressID ist der Fortschritt des Arbeitsschrittes der entweder 0(todo), 1(in work) oder 2 (finished) sein kann
         try {
             Statement stat = db.getCon().createStatement();
             String sqlString = "UPDATE arbeitsschritt "
