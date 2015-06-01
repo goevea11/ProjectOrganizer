@@ -14,6 +14,7 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author Domi
  */
+// Table Model für die Mitarbeiter Tabelle
 public class ProjectTableModel extends AbstractTableModel {
 
     private String[] colName = new String[]{"Number", "Name", "Beginn", "Ende"};
