@@ -9,6 +9,7 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author Domi
  */
+// Table Model für die Mitarbeitertabelle
 public class MitarbeiterTableModel extends AbstractTableModel {
 
     private String[] colName = new String[]{"ID", "Name", "Geburtsdatum"};
