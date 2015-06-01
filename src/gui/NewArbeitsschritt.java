@@ -146,7 +146,6 @@ public class NewArbeitsschritt extends javax.swing.JDialog {
             //int arbeitsschrittid, int projectid, int progressid, String bezeichnung, String text
             String bezeichnung = this.tfBezeichnung.getText();
             String text = this.tfText.getText();
-            System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
             this.a = new Arbeitsschritt(this.dbaccess.getArbeitsschrittId(bezeichnung, p.getProjektid()), p.getProjektid(), 0, bezeichnung, text);
             int mitarbeiterid = Integer.parseInt(this.cbMitarbeiter.getSelectedItem().toString().split(",")[0]);
             System.out.println(mitarbeiterid);
