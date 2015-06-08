@@ -185,6 +185,9 @@ public class ProjectGUI extends javax.swing.JFrame {
         if (newprojectdialog.isOk) {
             Projekt p = newprojectdialog.p;
             this.dba.insertProjekt(p, gründerid);
+            ll=dba.getProjekte(gründerid);
+            prtablemodel.setList(ll);
+            this.prtablemodel.fireTableDataChanged();
         }
     }//GEN-LAST:event_btncreateProjektActionPerformed
 

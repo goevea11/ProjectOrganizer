@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -87,7 +88,11 @@ public class NeuesProjekt extends javax.swing.JDialog {
 
     private void btnokActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnokActionPerformed
        //Baut das Projekt- Objekt aus den eingegebenen Daten zusammen
-        if (this.tfbeginndatum.getText().charAt(2) == '.' && tfbeginndatum.getText().charAt(5) == '.' && tfbeginndatum.getText().length() == 10
+        
+        
+       
+          if (!(this.tfbeginndatum.getText().isEmpty()&&this.tfenddatum.getText().isEmpty()&&this.tfname.getText().isEmpty())&&
+                  this.tfbeginndatum.getText().charAt(2) == '.' && tfbeginndatum.getText().charAt(5) == '.' && tfbeginndatum.getText().length() == 10
                 && this.tfenddatum.getText().charAt(2) == '.' && tfenddatum.getText().charAt(5) == '.' && tfenddatum.getText().length() == 10
                 && this.tfname.getText() != null && !this.tfname.getText().equals("")) {
 
@@ -103,7 +108,13 @@ public class NeuesProjekt extends javax.swing.JDialog {
                 Logger.getLogger(NeuesProjekt.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-        }
+        }else{
+              JOptionPane.showMessageDialog(this, "Bitte Eingaben überprüfen! (DD.MM.YYYY)");
+          }
+          
+          
+      
+       
     }//GEN-LAST:event_btnokActionPerformed
 
     /**

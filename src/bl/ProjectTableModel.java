@@ -24,6 +24,10 @@ public class ProjectTableModel extends AbstractTableModel {
         ll = prlist;
     }
 
+    public void setList(LinkedList<Projekt> prlist){
+        this.ll=prlist;
+    }
+    
     @Override
     public int getRowCount() {
         return ll.size();

@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -111,7 +112,9 @@ public class NewMitarbeiter extends javax.swing.JDialog {
             }
             this.isOk = true;
             this.setVisible(false);
-        }
+        }else{
+              JOptionPane.showMessageDialog(this, "Bitte Eingaben überprüfen! (DD.MM.YYYY)");
+          }
 
     }//GEN-LAST:event_btncreateAccountActionPerformed
 
