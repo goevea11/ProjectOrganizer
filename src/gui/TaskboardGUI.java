@@ -18,6 +18,7 @@ import bl.Arbeitsschritt;
 import bl.Mitarbeiter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import javax.swing.JFrame;
 import javax.swing.JList;
 
 /**
@@ -55,6 +56,7 @@ public class TaskboardGUI extends javax.swing.JFrame {
         finishedmodel = write(finishedlist, finishedmodel);
         newarbeitsschrittdialog = new NewArbeitsschritt(this, true, dba);
         newarbeitsschrittdialog.setProjekt(p);
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
     }
 
@@ -84,6 +86,11 @@ public class TaskboardGUI extends javax.swing.JFrame {
         btnaddArbeitsschritt = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
         getContentPane().setLayout(new java.awt.GridLayout(2, 5));
 
         jPanel6.setLayout(new java.awt.GridLayout(1, 5));
@@ -357,6 +364,10 @@ public class TaskboardGUI extends javax.swing.JFrame {
     private void finishedListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_finishedListMouseClicked
         mouseclick(finishedList, finishedmodel);
     }//GEN-LAST:event_finishedListMouseClicked
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+      this.dispose();
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
