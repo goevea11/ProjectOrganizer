@@ -16,10 +16,15 @@ import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import bl.Arbeitsschritt;
 import bl.Mitarbeiter;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 
 /**
  *
@@ -58,6 +63,7 @@ public class TaskboardGUI extends javax.swing.JFrame {
         newarbeitsschrittdialog.setProjekt(p);
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
+
     }
 
     @SuppressWarnings("unchecked")
@@ -83,7 +89,10 @@ public class TaskboardGUI extends javax.swing.JFrame {
         finishedList = new javax.swing.JList();
         jPanel7 = new javax.swing.JPanel();
         jTextField1 = new javax.swing.JTextField();
-        btnaddArbeitsschritt = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -203,18 +212,34 @@ public class TaskboardGUI extends javax.swing.JFrame {
 
         getContentPane().add(jPanel6);
 
-        jPanel7.setLayout(new java.awt.GridLayout(2, 0));
+        jPanel7.setLayout(new java.awt.GridLayout());
+
+        jTextField1.setEditable(false);
         jPanel7.add(jTextField1);
 
-        btnaddArbeitsschritt.setText("Arbeitsschritt hinzufügen");
-        btnaddArbeitsschritt.addActionListener(new java.awt.event.ActionListener() {
+        getContentPane().add(jPanel7);
+
+        jMenu1.setText("Options");
+
+        jMenuItem1.setText("Arbeitsschritt hinzufügen");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnaddArbeitsschrittActionPerformed(evt);
+                jMenuItem1ActionPerformed(evt);
             }
         });
-        jPanel7.add(btnaddArbeitsschritt);
+        jMenu1.add(jMenuItem1);
 
-        getContentPane().add(jPanel7);
+        jMenuItem2.setText("Arbeitsschritt löschen");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem2);
+
+        jMenuBar1.add(jMenu1);
+
+        setJMenuBar(jMenuBar1);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -240,9 +265,7 @@ public class TaskboardGUI extends javax.swing.JFrame {
             this.inworklist = dba.getInWorkList(this.p.getProjektid());
             inworkmodel = this.write(inworklist, inworkmodel);
             todomodel = this.write(todolist, todomodel);
-        }
-        else
-        {
+        } else {
             this.jTextField1.setText("Falsche Liste ausgewählt");
         }
     }//GEN-LAST:event_todo_inwork_rightActionPerformed
@@ -268,9 +291,7 @@ public class TaskboardGUI extends javax.swing.JFrame {
             this.inworklist = dba.getInWorkList(this.p.getProjektid());
             inworkmodel = this.write(inworklist, inworkmodel);
             todomodel = this.write(todolist, todomodel);
-        }
-        else
-        {
+        } else {
             this.jTextField1.setText("Falsche Liste ausgewählt");
         }
     }//GEN-LAST:event_todo_inwork_leftActionPerformed
@@ -297,9 +318,7 @@ public class TaskboardGUI extends javax.swing.JFrame {
             this.inworklist = dba.getInWorkList(this.p.getProjektid());
             inworkmodel = this.write(inworklist, inworkmodel);
             finishedmodel = this.write(finishedlist, finishedmodel);
-        }
-        else
-        {
+        } else {
             this.jTextField1.setText("Falsche Liste ausgewählt");
         }
     }//GEN-LAST:event_inwork_finished_rightActionPerformed
@@ -325,14 +344,24 @@ public class TaskboardGUI extends javax.swing.JFrame {
             this.inworklist = dba.getInWorkList(this.p.getProjektid());
             inworkmodel = this.write(inworklist, inworkmodel);
             finishedmodel = this.write(finishedlist, finishedmodel);
-        }
-        else
-        {
+        } else {
             this.jTextField1.setText("Falsche Liste ausgewählt");
         }
     }//GEN-LAST:event_inwork_finished_leftActionPerformed
 
-    private void btnaddArbeitsschrittActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaddArbeitsschrittActionPerformed
+    private void todoListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_todoListMouseClicked
+        mouseclick(todoList, todomodel);
+    }//GEN-LAST:event_todoListMouseClicked
+
+    private void inworkListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inworkListMouseClicked
+        mouseclick(inworkList, inworkmodel);
+    }//GEN-LAST:event_inworkListMouseClicked
+
+    private void finishedListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_finishedListMouseClicked
+        mouseclick(finishedList, finishedmodel);
+    }//GEN-LAST:event_finishedListMouseClicked
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // Es wird ein neuer Arbeitsschritt erstellt
         this.newarbeitsschrittdialog.setVisible(true);
 
@@ -351,19 +380,57 @@ public class TaskboardGUI extends javax.swing.JFrame {
         todomodel = write(todolist, todomodel);
         inworkmodel = write(inworklist, inworkmodel);
         finishedmodel = write(finishedlist, finishedmodel);
-    }//GEN-LAST:event_btnaddArbeitsschrittActionPerformed
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    private void todoListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_todoListMouseClicked
-        mouseclick(todoList, todomodel);
-    }//GEN-LAST:event_todoListMouseClicked
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
 
-    private void inworkListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inworkListMouseClicked
-        mouseclick(inworkList, inworkmodel);
-    }//GEN-LAST:event_inworkListMouseClicked
+        // Es wird der ausgewählte Arbeitsschritt ermittelt
+        // Wenn einer ausgewählt ist wird dieser gelöscht.
+        int i = todoList.getSelectedIndex();
+        JList liste=null;
+        DefaultListModel model=null;
+        if(i!=-1)
+        {
+            liste=todoList;
+            model=todomodel;
+        }
+            
+        else if((inworkList.getSelectedIndex())!=-1)
+        {
+            i=inworkList.getSelectedIndex();
+            liste=inworkList;
+            model=inworkmodel;
+        }
+        else if(finishedList.getSelectedIndex()!=-1)
+        {
+            i=finishedList.getSelectedIndex();
+            liste=finishedList;
+            model=finishedmodel;
+        }
+        
+        if (i != -1) {
+        // der ausgewählte index darf nicht -1 sein da sonst nichts ausgewählt wurde!
+        String s = (String) model.getElementAt(i);
+        String[] sf = s.split(",");
+        sf[0] = sf[0].trim();
+        dba.removeArbeitsschritt(p.getProjektid(), sf[0]);
 
-    private void finishedListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_finishedListMouseClicked
-        mouseclick(finishedList, finishedmodel);
-    }//GEN-LAST:event_finishedListMouseClicked
+        // Es werden die Model geleert und neu befüllt
+        inworkmodel.clear();
+        todomodel.clear();
+        finishedmodel.clear();
+        todolist = dba.getToDoList(p.getProjektid());
+        inworklist = dba.getInWorkList(p.getProjektid());
+        finishedlist = dba.getFinishedList(p.getProjektid());
+        todomodel = write(todolist, todomodel);
+        inworkmodel = write(inworklist, inworkmodel);
+        finishedmodel = write(finishedlist, finishedmodel);
+        }
+        else
+        {
+            this.jTextField1.setText("Bitte einen Arbeitsschritt auswählen!");
+        }
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
       this.dispose();
@@ -406,11 +473,14 @@ public class TaskboardGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnaddArbeitsschritt;
     private javax.swing.JList finishedList;
     private javax.swing.JList inworkList;
     private javax.swing.JButton inwork_finished_left;
     private javax.swing.JButton inwork_finished_right;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
