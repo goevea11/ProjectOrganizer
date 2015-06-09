@@ -115,9 +115,10 @@ public class DBAccess {
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         LinkedList<Mitarbeiter> mitarbeiterlist = new LinkedList<Mitarbeiter>();
         Statement stat = db.getCon().createStatement();
-        String sqlString = "SELECT m.mitarbeiterid, m.name,m.firstname,  m.birthdate, m.password"
+        String sqlString = "SELECT DISTINCT m.mitarbeiterid, m.name,m.firstname,  m.birthdate, m.password"
                 + " FROM mitarbeiter m INNER JOIN Verwaltung v ON(m.mitarbeiterid=v.mitarbeiterid)"
-                + " WHERE v.projektid=" + projektid + ";";
+                + " WHERE v.projektid=" + projektid + ""
+                + "ORDER BY 1 ;";
 
         ResultSet rs = stat.executeQuery(sqlString);
         while (rs.next()) {
@@ -237,7 +238,8 @@ public class DBAccess {
 
             String sqlString = "SELECT p.projektid, p.name , p.begindate , p.enddate "
                     + "FROM projekt p INNER JOIN verwaltung v ON(p.projektid=v.projektid) "
-                    + "WHERE v.mitarbeiterid = " + id + ";";
+                    + "WHERE v.mitarbeiterid = " + id + ""
+                    + " ORDER BY 1 ;";
             System.out.println(sqlString);
             ResultSet rs = stat.executeQuery(sqlString);
             SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
@@ -344,7 +346,8 @@ public class DBAccess {
         try {
             stat = db.getCon().createStatement();
             String sqlString = "SELECT m.mitarbeiterid, m.name,m.firstname,  m.birthdate, m.password"
-                    + " FROM mitarbeiter m;";
+                    + " FROM mitarbeiter m "
+                    + "ORDER BY 1 ;";
             ResultSet rs = stat.executeQuery(sqlString);
             while (rs.next()) {
                 java.sql.Date sqlbirthdate = rs.getDate(4);
